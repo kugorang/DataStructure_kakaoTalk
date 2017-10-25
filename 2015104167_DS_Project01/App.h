@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-// testasdfasdfadsfasdfsafasdfasddfs
+// 크크크
 
 class App
 {
