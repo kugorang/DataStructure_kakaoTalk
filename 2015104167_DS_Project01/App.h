@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-// 크크크
+// 크크크ㅁㄴㅇㄻㄴㅇㄹ
 
 class App
 {
