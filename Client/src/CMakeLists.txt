@@ -5,12 +5,10 @@
 file (GLOB DS_PROJECT1_HDR "*.h*")
 file (GLOB DS_PROJECT1_SRC "*.c*")
 
-
 # Variables setting for this project ####################################
 # set variable for this project
 SET(PROJ_NAME KakaoTalk)
 SET(PROJ_FILES ${DS_PROJECT1_HDR} ${DS_PROJECT1_SRC})
-
 
 # set build target #############################################
 SET_SOURCE_FILES_PROPERTIES(${PROJ_FILES}
