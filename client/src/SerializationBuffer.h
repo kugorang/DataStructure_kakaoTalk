@@ -27,13 +27,13 @@ public:
 	// 현재 버퍼에 남은 용량 얻기.
 	int GetRemainSize();
 
-	// 한 칸 이동 후 Rear 위치에 데이터 넣음.
+	// Rear 위치에 데이터 넣음.
 	int Enqueue(BYTE* data, int size);
 
-	// 한 칸 이동 후 Front 위치에서 데이터 뺌. Front 이동.
+	// Front 위치에서 데이터 뺌. Front 이동.
 	int Dequeue(BYTE* data, int size);
 
-	// 한 칸 이동 후 Front 위치에서 데이터 가져 옴. Front 안 변함.
+	// Front 위치에서 데이터 가져 옴. Front 안 변함.
 	int Peek(BYTE* dest, int size);
 
 	// 외부에서 Rear의 위치를 이동.

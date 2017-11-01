@@ -28,8 +28,8 @@ struct NetworkPacketHeader	// 총 6 bytes
 	BYTE code;
 	BYTE checkSum;
 
-	WORD MsgType;
-	WORD PayloadSize;
+	WORD msgType;
+	WORD payloadSize;
 };
 #pragma pack(pop)
 
@@ -42,7 +42,7 @@ struct NetworkPacketHeader	// 총 6 bytes
 // WCHAR[15] : 아이디 (유니코드)
 // WCHAR[15] : 비밀번호 (유니코드)
 //------------------------------------------------------------
-#define REQUSET_LOGIN	1
+#define REQUEST_LOGIN	1
 
 //------------------------------------------------------------
 // 2. Response 로그인
