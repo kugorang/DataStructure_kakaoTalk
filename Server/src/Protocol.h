@@ -48,14 +48,16 @@ struct NetworkPacketHeader	// 총 6 bytes
 // 2. Response 로그인
 // 
 // 1 Byte	: 결과 (1 : OK / 2 : 비밀번호 오류 / 3 : 아이디 오류 / 4 : 기타 오류)
-// 4 Bytes	: 사용자 번호
+// WCHAR[15] : 아이디 (유니코드)
+// WCHAR[15] : 이름 (유니코드)
 //------------------------------------------------------------
 #define RESPONSE_LOGIN	2
 
 #define RESPONSE_LOGIN_OK		1
 #define RESPONSE_LOGIN_PW_ERR	2
 #define RESPONSE_LOGIN_ID_ERR	3
-#define RESPONSE_LOGIN_ETC		4
+#define RESPONSE_LOGIN_ALREADY	4
+#define RESPONSE_LOGIN_ETC		5
 
 //------------------------------------------------------------
 // 3. Request 대화방 리스트

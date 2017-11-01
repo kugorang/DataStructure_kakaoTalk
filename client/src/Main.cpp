@@ -6,6 +6,7 @@
 
 // 전역 변수:
 int cmdShow, totalRoomNum = 0;
+bool cancelFlag = false;
 
 HINSTANCE instance;
 
@@ -192,10 +193,12 @@ INT_PTR CALLBACK ChoiceDialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 		case IDC_JOIN:
 			ShowWindow(hWndJoin, cmdShow);
 			UpdateWindow(hWndJoin);
+
 			return TRUE;
 		case IDC_LOGIN:
 			ShowWindow(hWndLogin, cmdShow);
 			UpdateWindow(hWndLogin);
+
 			return TRUE;
 		}
 		return FALSE;
@@ -326,6 +329,7 @@ INT_PTR CALLBACK LobbyDialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPar
 		return FALSE;
 	case WM_CLOSE:
 		EndDialog(hWnd, TRUE);
+		PostQuitMessage(0);
 		return TRUE;
 	}
 	return FALSE;
@@ -364,40 +368,6 @@ INT_PTR CALLBACK RoomDialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPara
 	return FALSE;
 }
 
-//// 회원가입 다이얼로그 프로시저
-//INT_PTR CALLBACK JoinDialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-//{
-//	switch (msg)
-//	{
-//	case WM_COMMAND:
-//		switch (wParam)
-//		{
-//		case IDOK:
-//			GetDlgItemText(hWnd, IDC_INPUTID, inputID, sizeof(inputID));
-//			GetDlgItemText(hWnd, IDC_INPUTPW, inputPW, sizeof(inputPW));
-//			GetDlgItemText(hWnd, IDC_INPUTNAME, inputName, sizeof(inputName));
-//			GetDlgItemText(hWnd, IDC_INPUTNUM, inputPhoneNum, sizeof(inputPhoneNum));
-//
-//			SendRequestJoin();
-//
-//			EndDialog(hWnd, TRUE);
-//			return TRUE;
-//		case IDCANCEL:
-//			EndDialog(hWnd, TRUE);
-//			break;
-//		}
-//		break;
-//	case WM_SOCKET:
-//		ProcessSocketMessage(hWnd, msg, wParam, lParam);
-//		break;
-//	case WM_CLOSE:
-//		EndDialog(hWnd, TRUE);
-//		break;
-//	}
-//
-//	return FALSE;
-//}
-
 // 알림 다이얼로그 프로시저
 INT_PTR CALLBACK NotiDialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -407,7 +377,15 @@ INT_PTR CALLBACK NotiDialogProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPara
 		switch (wParam)
 		{
 		case ID_NOTI_OK:
-			EndDialog(hWnd, TRUE);
+			if (!cancelFlag)
+			{
+				EndDialog(hWnd, TRUE);
+			}
+			else
+			{
+				PostQuitMessage(0);
+			}
+			
 			return TRUE;
 		}
 		break;

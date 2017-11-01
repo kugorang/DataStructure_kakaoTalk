@@ -21,6 +21,7 @@ struct SOCKETINFO
 };
 
 extern int cmdShow, totalRoomNum;
+extern bool cancelFlag;
 
 extern HINSTANCE instance;
 

@@ -155,8 +155,7 @@ private:
 	// 패킷을 만드는 함수들
 	// --------------------------------------------------
 	// 2. Response 로그인 처리 패킷을 만드는 함수
-	void MakePacketResponseLogin(NetworkPacketHeader* networkPacketHeader,
-		SerializationBuffer* serializationBuffer, BYTE response, int userNo);
+	void MakePacketResponseLogin(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, BYTE response, WCHAR *id, WCHAR *name);
 
 	// 4. Response 대화방 리스트 처리 함수
 	void MakePacketResponseRoomList(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer);

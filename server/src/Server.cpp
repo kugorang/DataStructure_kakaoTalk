@@ -348,11 +348,9 @@ void Server::SendResponseLogin(SOCKET sock, WCHAR* id, WCHAR *pw)
 
 	wprintf(L"Send : 02 - 로그인 응답 [SOCK : %lld]\n", sock);
 
-	NetworkPacketHeader networkPacketHeader;
-	SerializationBuffer serializationBuffer;
-
 	BYTE response = RESPONSE_LOGIN_ID_ERR;
-	int userNo = -1;
+	WCHAR idBuf[ID_MAX_LEN];
+	WCHAR nameBuf[NAME_MAX_LEN];
 
 	map<int, USERINFO*>::iterator userInfoMapIter;
 	map<int, USERINFO*>::iterator userInfoMapEnd = userInfoMap.end();
@@ -367,20 +365,40 @@ void Server::SendResponseLogin(SOCKET sock, WCHAR* id, WCHAR *pw)
 			// 비밀번호까지 같다면
 			if (wcscmp(userInfo->pw, pw) == 0)
 			{
-				// 로그인 성공
-				response = RESPONSE_LOGIN_OK;
-				sockInfo->userInfo = userInfo;
-				userNo = userInfo->userNo;
+				map<SOCKET, SOCKETINFO*>::iterator socketInfoMapEnd = socketInfoMap.end();
+
+				for (sockInfoMapIter = socketInfoMap.begin(); sockInfoMapIter != socketInfoMapEnd; ++sockInfoMapIter)
+				{
+					if ((*sockInfoMapIter).second->userInfo == userInfo)
+					{
+						response = RESPONSE_LOGIN_ALREADY;
+						break;
+					}
+				}
+
+				if (sockInfoMapIter == socketInfoMapEnd)
+				{
+					// 로그인 성공
+					response = RESPONSE_LOGIN_OK;
+					sockInfo->userInfo = userInfo;
+					wcscpy_s(idBuf, sizeof(idBuf), userInfo->id);
+					wcscpy_s(nameBuf, sizeof(nameBuf), userInfo->name);
+					break;
+				}
+			}
+			else
+			{
+				// 비밀번호가 다름을 알림.
+				response = RESPONSE_LOGIN_PW_ERR;
 				break;
 			}
-
-			// 비밀번호가 다름을 알림.
-			response = RESPONSE_LOGIN_PW_ERR;
-			break;
 		}
 	}
 
-	MakePacketResponseLogin(&networkPacketHeader, &serializationBuffer, response, userNo);
+	NetworkPacketHeader networkPacketHeader;
+	SerializationBuffer serializationBuffer;
+
+	MakePacketResponseLogin(&networkPacketHeader, &serializationBuffer, response, idBuf, nameBuf);
 
 	SendUnicast(sock, networkPacketHeader, &serializationBuffer);
 }
@@ -923,12 +941,14 @@ void Server::ErrorQuit(WCHAR* msg)
 }
 
 // 2. Response 로그인 처리 패킷을 만드는 함수
-void Server::MakePacketResponseLogin(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, BYTE response, int userNo)
+void Server::MakePacketResponseLogin(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, BYTE response, WCHAR *id, WCHAR *name)
 {
 	networkPacketHeader->code = NETWORK_PACKET_CODE;
 	networkPacketHeader->MsgType = RESPONSE_LOGIN;
 
-	*serializationBuffer << response << userNo;
+	*serializationBuffer << response;
+	serializationBuffer->Enqueue((BYTE*)id, ID_MAX_LEN * sizeof(WCHAR));
+	serializationBuffer->Enqueue((BYTE*)name, NAME_MAX_LEN * sizeof(WCHAR));
 
 	networkPacketHeader->PayloadSize = serializationBuffer->GetUseSize();
 	networkPacketHeader->checkSum = MakeCheckSum(networkPacketHeader->MsgType, networkPacketHeader->PayloadSize, serializationBuffer);

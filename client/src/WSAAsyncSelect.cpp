@@ -242,27 +242,37 @@ void SendRequestLogin(WCHAR* id, WCHAR *pw)
 void RecvResponseLogin(SerializationBuffer* serializationBuffer)
 {
 	BYTE result;
-	int userNo;
+	WCHAR id[ID_MAX_LEN], name[NAME_MAX_LEN];
 
-	*serializationBuffer >> result >> userNo;
+	*serializationBuffer >> result;
 
 	switch (result)
 	{
-	case RESPONSE_LOGIN_OK:		
-		SetDlgItemText(hWndLobby, IDC_USERNICKNAME, inputName);
-		SetDlgItemInt(hWndLobby, IDC_USERNO, userNo, false);
+	case RESPONSE_LOGIN_OK:
+		serializationBuffer->Dequeue((BYTE*)id, sizeof(id));
+		serializationBuffer->Dequeue((BYTE*)name, sizeof(name));
 
-		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"로그인 됬당");
+		SetDlgItemText(hWndLobby, IDC_USERNO, id);
+		SetDlgItemText(hWndLobby, IDC_USERNICKNAME, name);
+
+		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"로그인에 성공했습니다.");
 		SendRequestRoomList();
 		break;
 	case RESPONSE_LOGIN_PW_ERR:
-		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"비번 확인해라");
+		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"비밀번호를 확인해주시기 바랍니다.");
+		cancelFlag = true;
 		break;
 	case RESPONSE_LOGIN_ID_ERR:
-		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"아이디 확인해라");
+		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"존재하지 않는 아이디입니다.");
+		cancelFlag = true;
+		break;
+	case RESPONSE_LOGIN_ALREADY:
+		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"이미 로그인한 사용자입니다.");
+		cancelFlag = true;
 		break;
 	case RESPONSE_LOGIN_ETC:
-		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"아몰랑 로그인 안됨");
+		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"알 수 없는 이유로 로그인에 실패했습니다.");
+		cancelFlag = true;
 		break;
 	default:
 		break;
@@ -437,7 +447,7 @@ void SendRequestChat()
 {
 	WCHAR chatMsg[256];
 
-	wsprintf(chatMsg, L"%s : ", inputID);
+	wsprintf(chatMsg, L"%s : ", inputName);
 
 	GetDlgItemText(hWndRoom, IDC_INPUTCHAT, chatMsg + wcslen(chatMsg), sizeof(chatMsg));
 
@@ -565,16 +575,16 @@ void RecvResponseJoin(SerializationBuffer *serializationBuffer)
 	switch (result)
 	{
 	case RESPONSE_JOIN_OK:
-		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"회원가입 ㅊㅊ");
+		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"회원가입이 완료되었습니다.");
 		break;
 	case RESPONSE_JOIN_DNICK:
-		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"이미 있는 아이디다");
+		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"이미 존재하는 아이디입니다.");
 		break;
 	case RESPONSE_JOIN_MAX:
-		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"헐ㅋ 사람이 너무 많아서 회원가입 안 됨");
+		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"회원 수 제한으로 인해 회원가입이 제한되었습니다.");
 		break;
 	case RESPONSE_JOIN_ETC:
-		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"이유는 모르겠지만 어쨌든 안됨 ㅂ");
+		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"알 수 없는 이유로 회원가입에 실패했습니다.");
 		break;
 	}
 
@@ -604,14 +614,14 @@ void RecvResponseEditInfo(SerializationBuffer *serializationBuffer)
 	switch (result)
 	{
 	case RESPONSE_EDIT_INFO_OK:
-		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"회원 정보 수정 완료!");
+		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"회원 정보 수정을 완료했습니다.");
 		SetDlgItemText(hWndLobby, IDC_USERNICKNAME, inputName);
 		break;
 	case RESPONSE_EDIT_INFO_DNICK:
-		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"이미 있는 아이디다");
+		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"이미 존재하는 아이디입니다.");
 		break;
 	case RESPONSE_EDIT_INFO_ETC:
-		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"이유는 모르겠지만 어쨌든 안됨 ㅂ");
+		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"알 수 없는 이유로 회원 정보 수정에 실패했습니다.");
 		break;
 	}
 
