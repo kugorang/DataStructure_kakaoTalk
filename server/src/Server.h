@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <Windows.h>
 #include <map>
@@ -15,7 +15,7 @@ using namespace std;
 #define ROOM_MAX 20
 #define ROOM_PEOPLE_MAX 20
 
-// È¸¿ø Á¤º¸ ÀúÀåÀ» À§ÇÑ ±¸Á¶Ã¼
+// íšŒì› ì •ë³´ ì €ì¥ì„ ìœ„í•œ êµ¬ì¡°ì²´
 struct USERINFO
 {
 	int userNo;
@@ -25,7 +25,7 @@ struct USERINFO
 	WCHAR phoneNum[PHONENUM_MAX_LEN];
 };
 
-// ¼ÒÄÏ Á¤º¸ ÀúÀåÀ» À§ÇÑ ±¸Á¶Ã¼
+// ì†Œì¼“ ì •ë³´ ì €ì¥ì„ ìœ„í•œ êµ¬ì¡°ì²´
 struct SOCKETINFO
 {
 	USERINFO* userInfo;
@@ -36,7 +36,7 @@ struct SOCKETINFO
 	RingBuffer sendQueue;
 };
 
-// ¹æ Á¤º¸ ÀúÀåÀ» À§ÇÑ ±¸Á¶Ã¼
+// ë°© ì •ë³´ ì €ì¥ì„ ìœ„í•œ êµ¬ì¡°ì²´
 struct ROOMINFO
 {
 	int roomNo;
@@ -58,132 +58,132 @@ private:
 	int totalRooms = 0;
 
 	// --------------------------------------------------
-	// ³×Æ®¿öÅ© Select ÇÔ¼öµé
+	// ë„¤íŠ¸ì›Œí¬ Select í•¨ìˆ˜ë“¤
 	// --------------------------------------------------
-	// ¼ÒÄÏ ÇÔ¼ö ¿À·ù Ãâ·Â ÈÄ Á¾·á
+	// ì†Œì¼“ í•¨ìˆ˜ ì˜¤ë¥˜ ì¶œë ¥ í›„ ì¢…ë£Œ
 	void ErrorQuit(WCHAR* msg);
 
-	// FD_WRITE Ã³¸® ÇÔ¼ö
+	// FD_WRITE ì²˜ë¦¬ í•¨ìˆ˜
 	int FDWriteProc(SOCKET sock, SOCKETINFO* socketInfo);
 
-	// FD_READ Ã³¸® ÇÔ¼ö
+	// FD_READ ì²˜ë¦¬ í•¨ìˆ˜
 	int FDReadProc(SOCKET sock, SOCKETINFO* socketInfo);
 
-	// CheckSumÀ» ¸¸µå´Â ÇÔ¼ö
+	// CheckSumì„ ë§Œë“œëŠ” í•¨ìˆ˜
 	int MakeCheckSum(WORD msgType, WORD payloadSize, SerializationBuffer* serializationBuffer);
 
-	// PacketÀ» Ã³¸®ÇÏ´Â ÇÔ¼ö
+	// Packetì„ ì²˜ë¦¬í•˜ëŠ” í•¨ìˆ˜
 	void PacketProc(SOCKET sock, WORD type, SerializationBuffer* serializationBuffer);
 
-	// 1. Request ·Î±×ÀÎ Ã³¸® ÇÔ¼ö
+	// 1. Request ë¡œê·¸ì¸ ì²˜ë¦¬ í•¨ìˆ˜
 	void RecvRequestLogin(SOCKET sock, SerializationBuffer* serializationBuffer);
 
-	// 2. Response ·Î±×ÀÎ Ã³¸® ÇÔ¼ö
+	// 2. Response ë¡œê·¸ì¸ ì²˜ë¦¬ í•¨ìˆ˜
 	void SendResponseLogin(SOCKET sock, WCHAR* id, WCHAR *pw);
 
-	// 3. Request ´ëÈ­¹æ ¸®½ºÆ® Ã³¸® ÇÔ¼ö
+	// 3. Request ëŒ€í™”ë°© ë¦¬ìŠ¤íŠ¸ ì²˜ë¦¬ í•¨ìˆ˜
 	void RecvRequestRoomList(SOCKET sock, SerializationBuffer* serializationBuffer);
 
-	// 4. Response ´ëÈ­¹æ ¸®½ºÆ® Ã³¸® ÇÔ¼ö
+	// 4. Response ëŒ€í™”ë°© ë¦¬ìŠ¤íŠ¸ ì²˜ë¦¬ í•¨ìˆ˜
 	void SendResponseRoomList(SOCKET sock);
 
-	// 5. Request ´ëÈ­¹æ »ı¼º Ã³¸® ÇÔ¼ö
+	// 5. Request ëŒ€í™”ë°© ìƒì„± ì²˜ë¦¬ í•¨ìˆ˜
 	void RecvRequestRoomCreate(SOCKET sock, SerializationBuffer* serializationBuffer);
 
-	// 6. Response ´ëÈ­¹æ »ı¼º (¼ö½Ã) Ã³¸® ÇÔ¼ö
+	// 6. Response ëŒ€í™”ë°© ìƒì„± (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 	void SendResponseRoomCreate(SOCKET sock, WCHAR* roomTitle, WORD roomTitleSize);
 
-	// 7. Request ´ëÈ­¹æ ÀÔÀå Ã³¸® ÇÔ¼ö
+	// 7. Request ëŒ€í™”ë°© ì…ì¥ ì²˜ë¦¬ í•¨ìˆ˜
 	void RecvRequestRoomEnter(SOCKET sock, SerializationBuffer* serializationBuffer);
 
-	// 8. Response ´ëÈ­¹æ ÀÔÀå Ã³¸® ÇÔ¼ö
+	// 8. Response ëŒ€í™”ë°© ì…ì¥ ì²˜ë¦¬ í•¨ìˆ˜
 	void SendResponseRoomEnter(SOCKET sock, BYTE response, ROOMINFO* roomInfoPtr);
 
-	// 9. Request Ã¤ÆÃ ¼Û½Å Ã³¸® ÇÔ¼ö
+	// 9. Request ì±„íŒ… ì†¡ì‹  ì²˜ë¦¬ í•¨ìˆ˜
 	void RecvRequestChat(SOCKET sock, SerializationBuffer* serializationBuffer);
 
-	// 10. Response Ã¤ÆÃ ¼ö½Å (¼ö½Ã) (³ª¿¡°Õ ¿ÀÁö ¾ÊÀ½) Ã³¸® ÇÔ¼ö
+	// 10. Response ì±„íŒ… ìˆ˜ì‹  (ìˆ˜ì‹œ) (ë‚˜ì—ê² ì˜¤ì§€ ì•ŠìŒ) ì²˜ë¦¬ í•¨ìˆ˜
 	void SendResponseChat(SOCKET sock, WORD msgSize, WCHAR* msg);
 
-	// 11. Request ¹æ ÅğÀå Ã³¸® ÇÔ¼ö
+	// 11. Request ë°© í‡´ì¥ ì²˜ë¦¬ í•¨ìˆ˜
 	void RecvRequestRoomLeave(SOCKET sock, SerializationBuffer* serializationBuffer);
 
-	// 12. Response ¹æ ÅğÀå (¼ö½Ã) Ã³¸® ÇÔ¼ö
+	// 12. Response ë°© í‡´ì¥ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 	void SendResponseRoomLeave(SOCKET sock);
 
-	// 13. Response ¹æ »èÁ¦ (¼ö½Ã) Ã³¸® ÇÔ¼ö
+	// 13. Response ë°© ì‚­ì œ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 	void SendResponseRoomDelete(SOCKET sock, int roomNo);
 
-	// 14. Response Å¸ »ç¿ëÀÚ ÀÔÀå (¼ö½Ã) Ã³¸® ÇÔ¼ö
+	// 14. Response íƒ€ ì‚¬ìš©ì ì…ì¥ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 	void SendResponseUserEnter(SOCKET sock, SOCKETINFO* socketInfo);
 
-	// 15. Request È¸¿ø °¡ÀÔ Ã³¸® ÇÔ¼ö
+	// 15. Request íšŒì› ê°€ì… ì²˜ë¦¬ í•¨ìˆ˜
 	void RecvRequestJoin(SOCKET sock, SerializationBuffer *serializationBuffer);
 
-	// 16. Response È¸¿ø °¡ÀÔ Ã³¸® ÇÔ¼ö
+	// 16. Response íšŒì› ê°€ì… ì²˜ë¦¬ í•¨ìˆ˜
 	void SendResponseJoin(SOCKET sock, WCHAR *id, WCHAR *pw, WCHAR *name, WCHAR *phoneNum);
 
-	// 17. Request È¸¿ø Á¤º¸ ¼öÁ¤ ÇÔ¼ö
+	// 17. Request íšŒì› ì •ë³´ ìˆ˜ì • í•¨ìˆ˜
 	void RecvRequestEditInfo(SOCKET sock, SerializationBuffer *SerializationBuffer);
 
-	// 18. Response È¸¿ø Á¤º¸ ¼öÁ¤ ÇÔ¼ö
+	// 18. Response íšŒì› ì •ë³´ ìˆ˜ì • í•¨ìˆ˜
 	void SendResponseEditInfo(SOCKET sock, WCHAR *id, WCHAR *pw, WCHAR *name, WCHAR *phoneNum);
 
-	// ¼ÒÄÏ °ü¸® ÇÔ¼ö
+	// ì†Œì¼“ ê´€ë¦¬ í•¨ìˆ˜
 	BOOL AddSocketInfo(SOCKET sock);
 	map<SOCKET, SOCKETINFO*>::iterator RemoveSocketInfo(SOCKET sock);
 
-	// ¹æÀ» Ã£´Â ÇÔ¼ö
+	// ë°©ì„ ì°¾ëŠ” í•¨ìˆ˜
 	ROOMINFO* FindRoom(int roomNo);
 
-	// ±× »ç¶÷¿¡°Ô¸¸ ¼Û½ÅÇÏ´Â ÇÔ¼ö
+	// ê·¸ ì‚¬ëŒì—ê²Œë§Œ ì†¡ì‹ í•˜ëŠ” í•¨ìˆ˜
 	void SendUnicast(SOCKET sock, NetworkPacketHeader networkPacketHeader,
 		SerializationBuffer* serializationBuffer);
 
-	// ±× »ç¶÷¿¡°Ô¸¸ ¼Û½ÅÇÏ´Â ÇÔ¼ö
+	// ê·¸ ì‚¬ëŒì—ê²Œë§Œ ì†¡ì‹ í•˜ëŠ” í•¨ìˆ˜
 	void SendUnicast(SOCKETINFO* socketInfo, NetworkPacketHeader networkPacketHeader, SerializationBuffer* serializationBuffer);
 
-	// ¸ğµç »ç¶÷µé¿¡°Ô ¼Û½ÅÇÏ´Â ÇÔ¼ö
+	// ëª¨ë“  ì‚¬ëŒë“¤ì—ê²Œ ì†¡ì‹ í•˜ëŠ” í•¨ìˆ˜
 	void SendBroadcast(NetworkPacketHeader networkPacketHeader,
 		SerializationBuffer* serializationBuffer);
 
-	// ¹æ¿¡ ÀÖ´Â »ç¶÷µé¿¡°Ô ¼Û½ÅÇÏ´Â ÇÔ¼ö
+	// ë°©ì— ìˆëŠ” ì‚¬ëŒë“¤ì—ê²Œ ì†¡ì‹ í•˜ëŠ” í•¨ìˆ˜
 	void SendBroadcastRoom(SOCKET exceptSock, NetworkPacketHeader networkPacketHeader, SerializationBuffer* serializationBuffer,
 		int roomNo);
 
 	// --------------------------------------------------
-	// ÆĞÅ¶À» ¸¸µå´Â ÇÔ¼öµé
+	// íŒ¨í‚·ì„ ë§Œë“œëŠ” í•¨ìˆ˜ë“¤
 	// --------------------------------------------------
-	// 2. Response ·Î±×ÀÎ Ã³¸® ÆĞÅ¶À» ¸¸µå´Â ÇÔ¼ö
+	// 2. Response ë¡œê·¸ì¸ ì²˜ë¦¬ íŒ¨í‚·ì„ ë§Œë“œëŠ” í•¨ìˆ˜
 	void MakePacketResponseLogin(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, BYTE response, WCHAR *id, WCHAR *name);
 
-	// 4. Response ´ëÈ­¹æ ¸®½ºÆ® Ã³¸® ÇÔ¼ö
+	// 4. Response ëŒ€í™”ë°© ë¦¬ìŠ¤íŠ¸ ì²˜ë¦¬ í•¨ìˆ˜
 	void MakePacketResponseRoomList(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer);
 
-	// 6. Response ´ëÈ­¹æ »ı¼º (¼ö½Ã) Ã³¸® ÇÔ¼ö
+	// 6. Response ëŒ€í™”ë°© ìƒì„± (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 	void MakePacketResponseRoomCreate(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, BYTE response, ROOMINFO* roomInfoStruct);
 
-	// 8. Response ´ëÈ­¹æ ÀÔÀå Ã³¸® ÇÔ¼ö
+	// 8. Response ëŒ€í™”ë°© ì…ì¥ ì²˜ë¦¬ í•¨ìˆ˜
 	bool MakePacketResponseRoomEnter(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, BYTE response, ROOMINFO* roomInfoPtr);
 
-	// 10. Response Ã¤ÆÃ ¼ö½Å (¼ö½Ã) (³ª¿¡°Õ ¿ÀÁö ¾ÊÀ½) Ã³¸® ÇÔ¼ö
+	// 10. Response ì±„íŒ… ìˆ˜ì‹  (ìˆ˜ì‹œ) (ë‚˜ì—ê² ì˜¤ì§€ ì•ŠìŒ) ì²˜ë¦¬ í•¨ìˆ˜
 	int MakePacketResponseChat(NetworkPacketHeader* networkPacketHeader,
 		SerializationBuffer* serializationBuffer, SOCKET sock, WORD msgSize, WCHAR* msg);
 
-	// 12. Response ¹æ ÅğÀå (¼ö½Ã) Ã³¸® ÇÔ¼ö
+	// 12. Response ë°© í‡´ì¥ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 	int MakePacketResponseRoomLeave(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, SOCKET sock);
 
-	// 13. Response ¹æ »èÁ¦ (¼ö½Ã) Ã³¸® ÇÔ¼ö
+	// 13. Response ë°© ì‚­ì œ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 	void MakePacketResponseRoomDelete(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, int roomNo);
 
-	// 14. Response Å¸ »ç¿ëÀÚ ÀÔÀå (¼ö½Ã) Ã³¸® ÇÔ¼ö
+	// 14. Response íƒ€ ì‚¬ìš©ì ì…ì¥ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 	void MakePacketResponseUserEnter(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, SOCKET sock, SOCKETINFO* socketInfo);
 
-	// 16. Response È¸¿ø °¡ÀÔ Ã³¸® ÇÔ¼ö
+	// 16. Response íšŒì› ê°€ì… ì²˜ë¦¬ í•¨ìˆ˜
 	void MakePacketResponseJoin(NetworkPacketHeader *networkPacketHeader, SerializationBuffer *serializationBuffer, BYTE response, int userNo);
 
-	// 18. Response È¸¿ø Á¤º¸ ¼öÁ¤ Ã³¸® ÇÔ¼ö
-	void MakePacketResponseEditInfo(NetworkPacketHeader *networkPacketHeader, SerializationBuffer *serializationBuffer, BYTE response, int userNo);
+	// 18. Response íšŒì› ì •ë³´ ìˆ˜ì • ì²˜ë¦¬ í•¨ìˆ˜
+	void MakePacketResponseEditInfo(NetworkPacketHeader *networkPacketHeader, SerializationBuffer *serializationBuffer, BYTE response, WCHAR *idBuf, WCHAR *nameBUf);
 
 public:
 	~Server();

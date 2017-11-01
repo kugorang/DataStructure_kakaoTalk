@@ -607,15 +607,21 @@ void SendRequestEditInfo()
 void RecvResponseEditInfo(SerializationBuffer *serializationBuffer)
 {
 	BYTE result;
-	int userNo;
+	WCHAR id[ID_MAX_LEN];
+	WCHAR name[NAME_MAX_LEN];
 
-	*serializationBuffer >> result >> userNo;
+	*serializationBuffer >> result;
 
 	switch (result)
 	{
 	case RESPONSE_EDIT_INFO_OK:
+		serializationBuffer->Dequeue((BYTE*)id, sizeof(id));
+		serializationBuffer->Dequeue((BYTE*)name, sizeof(name));
+
 		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"회원 정보 수정을 완료했습니다.");
-		SetDlgItemText(hWndLobby, IDC_USERNICKNAME, inputName);
+		SetDlgItemText(hWndLobby, IDC_USERNO, id);
+		SetDlgItemText(hWndLobby, IDC_USERNICKNAME, name);
+
 		break;
 	case RESPONSE_EDIT_INFO_DNICK:
 		SetDlgItemText(hWndNoti, IDC_NOTI_TXT, L"이미 존재하는 아이디입니다.");

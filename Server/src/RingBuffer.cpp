@@ -1,6 +1,6 @@
-#include "RingBuffer.h"
+ï»¿#include "RingBuffer.h"
 
-// »ı¼ºÀÚ, ÆÄ±«ÀÚ.
+// ìƒì„±ì, íŒŒê´´ì.
 RingBuffer::RingBuffer()
 {
 	bufferSize = RINGBUFFER_DEFAULT_SIZE;
@@ -27,13 +27,13 @@ RingBuffer::~RingBuffer()
 	buffer = nullptr;
 }
 
-// ¹öÆÛ ÀüÃ¼ÀÇ ¿ë·® ¾òÀ½.
+// ë²„í¼ ì „ì²´ì˜ ìš©ëŸ‰ ì–»ìŒ.
 int RingBuffer::GetBufferSize()
 {
 	return sizeof(BYTE) * (bufferSize);
 }
 
-// ÇöÀç »ç¿ëÁßÀÎ ¿ë·® ¾ò±â.
+// í˜„ì¬ ì‚¬ìš©ì¤‘ì¸ ìš©ëŸ‰ ì–»ê¸°.
 int RingBuffer::GetUseSize()
 {
 	if (rear >= front)
@@ -46,7 +46,7 @@ int RingBuffer::GetUseSize()
 	}
 }
 
-// ÇöÀç ¹öÆÛ¿¡ ³²Àº ¿ë·® ¾ò±â.
+// í˜„ì¬ ë²„í¼ì— ë‚¨ì€ ìš©ëŸ‰ ì–»ê¸°.
 int RingBuffer::GetRemainSize()
 {
 	if (rear >= front)
@@ -59,7 +59,7 @@ int RingBuffer::GetRemainSize()
 	}
 }
 
-// ¹öÆÛ Æ÷ÀÎÅÍ·Î ¿ÜºÎ¿¡¼­ ÇÑ ¹ø¿¡ ÀĞÀ» ¼ö ÀÖ´Â ±æÀÌ ¾ò±â.
+// ë²„í¼ í¬ì¸í„°ë¡œ ì™¸ë¶€ì—ì„œ í•œ ë²ˆì— ì½ì„ ìˆ˜ ìˆëŠ” ê¸¸ì´ ì–»ê¸°.
 int RingBuffer::GetNotBrokenGetSize()
 {
 	if (rear >= front)
@@ -72,7 +72,7 @@ int RingBuffer::GetNotBrokenGetSize()
 	}
 }
 
-// ¹öÆÛ Æ÷ÀÎÅÍ·Î ¿ÜºÎ¿¡¼­ ÇÑ ¹ø¿¡ ¾µ ¼ö ÀÖ´Â ±æÀÌ ¾ò±â.
+// ë²„í¼ í¬ì¸í„°ë¡œ ì™¸ë¶€ì—ì„œ í•œ ë²ˆì— ì“¸ ìˆ˜ ìˆëŠ” ê¸¸ì´ ì–»ê¸°.
 int RingBuffer::GetNotBrokenPutSize()
 {
 	if (rear >= front)
@@ -85,7 +85,7 @@ int RingBuffer::GetNotBrokenPutSize()
 	}
 }
 
-// Rear À§Ä¡¿¡ µ¥ÀÌÅÍ ³ÖÀ½.
+// Rear ìœ„ì¹˜ì— ë°ì´í„° ë„£ìŒ.
 int RingBuffer::Enqueue(BYTE* data, int size)
 {
 	int remainSize = GetRemainSize();
@@ -110,7 +110,7 @@ int RingBuffer::Enqueue(BYTE* data, int size)
 	return size;
 }
 
-// Front À§Ä¡¿¡¼­ µ¥ÀÌÅÍ »­. Front ÀÌµ¿.
+// Front ìœ„ì¹˜ì—ì„œ ë°ì´í„° ëºŒ. Front ì´ë™.
 int RingBuffer::Dequeue(BYTE* data, int size)
 {
 	int useSize = GetUseSize();
@@ -138,7 +138,7 @@ int RingBuffer::Dequeue(BYTE* data, int size)
 	return size;
 }
 
-// Front À§Ä¡¿¡¼­ µ¥ÀÌÅÍ °¡Á® ¿È. Front ¾È º¯ÇÔ.
+// Front ìœ„ì¹˜ì—ì„œ ë°ì´í„° ê°€ì ¸ ì˜´. Front ì•ˆ ë³€í•¨.
 int RingBuffer::Peek(BYTE* dest, int size)
 {
 	int useSize = GetUseSize();
@@ -162,32 +162,32 @@ int RingBuffer::Peek(BYTE* dest, int size)
 	return size;
 }
 
-// ¿ÜºÎ¿¡¼­ RearÀÇ À§Ä¡¸¦ ÀÌµ¿.
+// ì™¸ë¶€ì—ì„œ Rearì˜ ìœ„ì¹˜ë¥¼ ì´ë™.
 void RingBuffer::MoveRearPos(int size)
 {
 	rear = (rear + size) % bufferSize;
 }
 
-// ¿ÜºÎ¿¡¼­ FrontÀÇ À§Ä¡¸¦ ÀÌµ¿.
+// ì™¸ë¶€ì—ì„œ Frontì˜ ìœ„ì¹˜ë¥¼ ì´ë™.
 void RingBuffer::MoveFrontPos(int size)
 {
 	front = (front + size) % bufferSize;
 }
 
-// ¹öÆÛÀÇ ¸ğµç µ¥ÀÌÅÍ »èÁ¦.
+// ë²„í¼ì˜ ëª¨ë“  ë°ì´í„° ì‚­ì œ.
 void RingBuffer::DeleteAllData()
 {
 	front = 0;
 	rear = 0;
 }
 
-// ¹öÆÛÀÇ Æ÷ÀÎÅÍ ¾òÀ½.
+// ë²„í¼ì˜ í¬ì¸í„° ì–»ìŒ.
 BYTE* RingBuffer::GetBufferPtr()
 {
 	return buffer;
 }
 
-// ¹öÆÛÀÇ Rear À§Ä¡ ¹öÆÛ Æ÷ÀÎÅÍ ¾òÀ½.
+// ë²„í¼ì˜ Rear ìœ„ì¹˜ ë²„í¼ í¬ì¸í„° ì–»ìŒ.
 BYTE* RingBuffer::GetRearPosBufferPtr()
 {
 	if (rear != bufferSize)
@@ -200,7 +200,7 @@ BYTE* RingBuffer::GetRearPosBufferPtr()
 	}
 }
 
-// ¹öÆÛÀÇ Front À§Ä¡ ¹öÆÛ Æ÷ÀÎÅÍ ¾òÀ½.
+// ë²„í¼ì˜ Front ìœ„ì¹˜ ë²„í¼ í¬ì¸í„° ì–»ìŒ.
 BYTE* RingBuffer::GetFrontPosBufferPtr()
 {
 	if (front != bufferSize)

@@ -1,4 +1,4 @@
-#include "Server.h"
+ï»¿#include "Server.h"
 
 Server::~Server()
 {
@@ -62,15 +62,15 @@ void Server::Network(SOCKET listenSock)
 		{
 			int socketCount = 1;
 
-			// ¼ÒÄÏ ¼Â ÃÊ±âÈ­
+			// ì†Œì¼“ ì…‹ ì´ˆê¸°í™”
 			FD_ZERO(&rset);
 			FD_ZERO(&wset);
 
-			// listenSockÀ» ÀĞ±â ¼Â¿¡ ³Ö´Â´Ù.
+			// listenSockì„ ì½ê¸° ì…‹ì— ë„£ëŠ”ë‹¤.
 			FD_SET(listenSock, &rset);
 			map<SOCKET, SOCKETINFO*>::iterator socketInfoMapEnd = socketInfoMap.end();
 
-			// ÇöÀç Á¢¼Ó ÁßÀÎ ¸ğµç Å¬¶óÀÌ¾ğÆ®µéÀÇ ¼ÒÄÏÀ» ÀĞ±â ¼Â¿¡ ³Ö´Â´Ù.
+			// í˜„ì¬ ì ‘ì† ì¤‘ì¸ ëª¨ë“  í´ë¼ì´ì–¸íŠ¸ë“¤ì˜ ì†Œì¼“ì„ ì½ê¸° ì…‹ì— ë„£ëŠ”ë‹¤.
 			for (socketInfoMapIter; socketInfoMapIter != socketInfoMapEnd; ++socketInfoMapIter)
 			{
 				FD_SET(socketInfoMapIter->first, &rset);
@@ -90,7 +90,7 @@ void Server::Network(SOCKET listenSock)
 				}
 			}
 
-			// select() ÇÔ¼ö¸¦ È£ÃâÇÑ´Ù.
+			// select() í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•œë‹¤.
 			timeval time;
 			time.tv_sec = 0;
 			time.tv_usec = 0;
@@ -102,35 +102,35 @@ void Server::Network(SOCKET listenSock)
 				ErrorQuit(L"select()");
 			}
 
-			// ¼ÒÄÏ set °Ë»ç : Å¬¶óÀÌ¾ğÆ® Á¢¼Ó ¼ö¿ë
-			// select() ÇÔ¼ö°¡ ¸®ÅÏÇÏ¸é ¸ÕÀú ÀĞ±â setÀ» °Ë»çÇÏ¿©, Á¢¼ÓÇÑ Å¬¶óÀÌ¾ğÆ®°¡ ÀÖ´ÂÁö È®ÀÎÇÑ´Ù.
-			// ¿¬°á ´ë±â ¼ÒÄÏÀÌ ÀĞ±â set¿¡ ÀÖ´Ù¸é Å¬¶óÀÌ¾ğÆ®°¡ Á¢¼ÓÇÑ °æ¿ìÀÌ´Ù.
+			// ì†Œì¼“ set ê²€ì‚¬ : í´ë¼ì´ì–¸íŠ¸ ì ‘ì† ìˆ˜ìš©
+			// select() í•¨ìˆ˜ê°€ ë¦¬í„´í•˜ë©´ ë¨¼ì € ì½ê¸° setì„ ê²€ì‚¬í•˜ì—¬, ì ‘ì†í•œ í´ë¼ì´ì–¸íŠ¸ê°€ ìˆëŠ”ì§€ í™•ì¸í•œë‹¤.
+			// ì—°ê²° ëŒ€ê¸° ì†Œì¼“ì´ ì½ê¸° setì— ìˆë‹¤ë©´ í´ë¼ì´ì–¸íŠ¸ê°€ ì ‘ì†í•œ ê²½ìš°ì´ë‹¤.
 			if (FD_ISSET(listenSock, &rset))
 			{
 				addrLen = sizeof(clientAddr);
 
-				// accept ÇÔ¼ö¸¦ È£ÃâÇÑ´Ù.
+				// accept í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•œë‹¤.
 				clientSock = accept(listenSock, (SOCKADDR*)&clientAddr, &addrLen);
 
-				// INVALIED_SOCKETÀÌ ¸®ÅÏµÇ¸é ¿À·ù¸¦ È­¸é¿¡ Ãâ·ÂÇÑ´Ù.
+				// INVALIED_SOCKETì´ ë¦¬í„´ë˜ë©´ ì˜¤ë¥˜ë¥¼ í™”ë©´ì— ì¶œë ¥í•œë‹¤.
 				if (clientSock == INVALID_SOCKET)
 				{
 					ErrorQuit(L"accept()");
 				}
 				else
 				{
-					// AddSocketInfo() ÇÔ¼ö¸¦ È£ÃâÇÏ¿© ¼ÒÄÏ Á¤º¸¸¦ Ãß°¡ÇÑ´Ù.
+					// AddSocketInfo() í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ì—¬ ì†Œì¼“ ì •ë³´ë¥¼ ì¶”ê°€í•œë‹¤.
 					if (AddSocketInfo(clientSock) == FALSE)
 					{
-						wprintf(L"Å¬¶óÀÌ¾ğÆ® Á¢¼ÓÀ» ÇØÁ¦ÇÕ´Ï´Ù!\n");
+						wprintf(L"í´ë¼ì´ì–¸íŠ¸ ì ‘ì†ì„ í•´ì œí•©ë‹ˆë‹¤!\n");
 						closesocket(clientSock);
 					}
 				}
 			}
 
-			// ¼ÒÄÏ set °Ë»ç : µ¥ÀÌÅÍ Åë½Å
-			// select() ÇÔ¼ö´Â Á¶°ÇÀ» ¸¸Á·ÇÏ´Â ¼ÒÄÏÀÇ °³¼ö¸¦ ¸®ÅÏÇÏÁö¸¸ ±¸Ã¼ÀûÀ¸·Î ¾î¶² ¼ÒÄÏÀÎÁö
-			// °¡¸£ÃÄÁÖÁö ¾ÊÀ¸¹Ç·Î, °ü¸®ÇÏ°í ÀÖ´Â ¸ğµç ¼ÒÄÏ¿¡ ´ëÇØ ¼ÒÄÏ set¿¡ µé¾î ÀÖ´ÂÁö ¿©ºÎ¸¦ È®ÀÎÇØ¾ß ÇÑ´Ù.
+			// ì†Œì¼“ set ê²€ì‚¬ : ë°ì´í„° í†µì‹ 
+			// select() í•¨ìˆ˜ëŠ” ì¡°ê±´ì„ ë§Œì¡±í•˜ëŠ” ì†Œì¼“ì˜ ê°œìˆ˜ë¥¼ ë¦¬í„´í•˜ì§€ë§Œ êµ¬ì²´ì ìœ¼ë¡œ ì–´ë–¤ ì†Œì¼“ì¸ì§€
+			// ê°€ë¥´ì³ì£¼ì§€ ì•Šìœ¼ë¯€ë¡œ, ê´€ë¦¬í•˜ê³  ìˆëŠ” ëª¨ë“  ì†Œì¼“ì— ëŒ€í•´ ì†Œì¼“ setì— ë“¤ì–´ ìˆëŠ”ì§€ ì—¬ë¶€ë¥¼ í™•ì¸í•´ì•¼ í•œë‹¤.
 			for (checkSockSetIter; checkSockSetIter != socketInfoMapEnd;)
 			{
 				SOCKET tmpSock = checkSockSetIter->first;
@@ -145,7 +145,7 @@ void Server::Network(SOCKET listenSock)
 					break;
 				}
 
-				// ¼ÒÄÏÀÌ ÀĞ±â ¼Â¿¡ µé¾î ÀÖ´Ù¸é recv() ÇÔ¼ö¸¦ È£ÃâÇÏ¿© µ¥ÀÌÅÍ¸¦ ÀĞ´Â´Ù.
+				// ì†Œì¼“ì´ ì½ê¸° ì…‹ì— ë“¤ì–´ ìˆë‹¤ë©´ recv() í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ì—¬ ë°ì´í„°ë¥¼ ì½ëŠ”ë‹¤.
 				if (FD_ISSET(tmpSock, &rset))
 				{
 					retval = FDReadProc(tmpSock, tmpSocketInfo);
@@ -157,7 +157,7 @@ void Server::Network(SOCKET listenSock)
 					}
 				}
 
-				// ¼ÒÄÏÀÌ ¾²±â ¼Â¿¡ µé¾î ÀÖ´Ù¸é send() ÇÔ¼ö¸¦ È£ÃâÇÏ¿© µ¥ÀÌÅÍ¸¦ ¾´´Ù.
+				// ì†Œì¼“ì´ ì“°ê¸° ì…‹ì— ë“¤ì–´ ìˆë‹¤ë©´ send() í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ì—¬ ë°ì´í„°ë¥¼ ì“´ë‹¤.
 				if (FD_ISSET(tmpSock, &wset))
 				{
 					retval = FDWriteProc(tmpSock, tmpSocketInfo);
@@ -261,14 +261,14 @@ int Server::FDReadProc(SOCKET sock, SOCKETINFO* socketInfo)
 			}
 			else
 			{
-				wprintf(L"CheckSum ¿¡·¯ - ");
+				wprintf(L"CheckSum ì—ëŸ¬ - ");
 				RemoveSocketInfo(sock);
 			}
 		}
 	}
 }
 
-// CheckSumÀ» ¸¸µå´Â ÇÔ¼ö
+// CheckSumì„ ë§Œë“œëŠ” í•¨ìˆ˜
 int Server::MakeCheckSum(WORD msgType, WORD payloadSize, SerializationBuffer* serializationBuffer)
 {
 	BYTE* confirmCheckSum = new BYTE[payloadSize];
@@ -292,7 +292,7 @@ int Server::MakeCheckSum(WORD msgType, WORD payloadSize, SerializationBuffer* se
 	return byteSum % 256;
 }
 
-// PacketÀ» Ã³¸®ÇÏ´Â ÇÔ¼ö
+// Packetì„ ì²˜ë¦¬í•˜ëŠ” í•¨ìˆ˜
 void Server::PacketProc(SOCKET sock, WORD type, SerializationBuffer* serializationBuffer)
 {
 	switch (type)
@@ -322,16 +322,16 @@ void Server::PacketProc(SOCKET sock, WORD type, SerializationBuffer* serializati
 		RecvRequestEditInfo(sock, serializationBuffer);
 		break;
 	default:
-		wprintf(L"¸Ş¼¼Áö Å¸ÀÔ ¿¡·¯ - ");
+		wprintf(L"ë©”ì„¸ì§€ íƒ€ì… ì—ëŸ¬ - ");
 		RemoveSocketInfo(sock);
 		break;
 	}
 }
 
-// 1. Request ·Î±×ÀÎ Ã³¸® ÇÔ¼ö
+// 1. Request ë¡œê·¸ì¸ ì²˜ë¦¬ í•¨ìˆ˜
 void Server::RecvRequestLogin(SOCKET sock, SerializationBuffer* serializationBuffer)
 {
-	wprintf(L"Recv : 01 - ·Î±×ÀÎ ¿äÃ» [SOCK : %lld]\n", sock);
+	wprintf(L"Recv : 01 - ë¡œê·¸ì¸ ìš”ì²­ [SOCK : %lld]\n", sock);
 
 	WCHAR id[ID_MAX_LEN], pw[PW_MAX_LEN];
 
@@ -340,13 +340,13 @@ void Server::RecvRequestLogin(SOCKET sock, SerializationBuffer* serializationBuf
 	SendResponseLogin(sock, id, pw);
 }
 
-// 2. Response ·Î±×ÀÎ Ã³¸® ÇÔ¼ö
+// 2. Response ë¡œê·¸ì¸ ì²˜ë¦¬ í•¨ìˆ˜
 void Server::SendResponseLogin(SOCKET sock, WCHAR* id, WCHAR *pw)
 {
 	map<SOCKET, SOCKETINFO*>::iterator sockInfoMapIter = socketInfoMap.find(sock);
 	SOCKETINFO* sockInfo = sockInfoMapIter->second;
 
-	wprintf(L"Send : 02 - ·Î±×ÀÎ ÀÀ´ä [SOCK : %lld]\n", sock);
+	wprintf(L"Send : 02 - ë¡œê·¸ì¸ ì‘ë‹µ [SOCK : %lld]\n", sock);
 
 	BYTE response = RESPONSE_LOGIN_ID_ERR;
 	WCHAR idBuf[ID_MAX_LEN];
@@ -359,10 +359,10 @@ void Server::SendResponseLogin(SOCKET sock, WCHAR* id, WCHAR *pw)
 	{
 		USERINFO *userInfo = userInfoMapIter->second;
 
-		// ¾ÆÀÌµğ°¡ °°À» ¶§
+		// ì•„ì´ë””ê°€ ê°™ì„ ë•Œ
 		if (wcscmp(userInfo->id, id) == 0)
 		{
-			// ºñ¹Ğ¹øÈ£±îÁö °°´Ù¸é
+			// ë¹„ë°€ë²ˆí˜¸ê¹Œì§€ ê°™ë‹¤ë©´
 			if (wcscmp(userInfo->pw, pw) == 0)
 			{
 				map<SOCKET, SOCKETINFO*>::iterator socketInfoMapEnd = socketInfoMap.end();
@@ -378,7 +378,7 @@ void Server::SendResponseLogin(SOCKET sock, WCHAR* id, WCHAR *pw)
 
 				if (sockInfoMapIter == socketInfoMapEnd)
 				{
-					// ·Î±×ÀÎ ¼º°ø
+					// ë¡œê·¸ì¸ ì„±ê³µ
 					response = RESPONSE_LOGIN_OK;
 					sockInfo->userInfo = userInfo;
 					wcscpy_s(idBuf, sizeof(idBuf), userInfo->id);
@@ -388,7 +388,7 @@ void Server::SendResponseLogin(SOCKET sock, WCHAR* id, WCHAR *pw)
 			}
 			else
 			{
-				// ºñ¹Ğ¹øÈ£°¡ ´Ù¸§À» ¾Ë¸².
+				// ë¹„ë°€ë²ˆí˜¸ê°€ ë‹¤ë¦„ì„ ì•Œë¦¼.
 				response = RESPONSE_LOGIN_PW_ERR;
 				break;
 			}
@@ -403,18 +403,18 @@ void Server::SendResponseLogin(SOCKET sock, WCHAR* id, WCHAR *pw)
 	SendUnicast(sock, networkPacketHeader, &serializationBuffer);
 }
 
-// 3. Request ´ëÈ­¹æ ¸®½ºÆ® Ã³¸® ÇÔ¼ö
+// 3. Request ëŒ€í™”ë°© ë¦¬ìŠ¤íŠ¸ ì²˜ë¦¬ í•¨ìˆ˜
 void Server::RecvRequestRoomList(SOCKET sock, SerializationBuffer* serializationBuffer)
 {
-	wprintf(L"Recv : 03 - ¹æ ¸®½ºÆ® ¿äÃ» [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
+	wprintf(L"Recv : 03 - ë°© ë¦¬ìŠ¤íŠ¸ ìš”ì²­ [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
 
 	SendResponseRoomList(sock);
 }
 
-// 4. Response ´ëÈ­¹æ ¸®½ºÆ® Ã³¸® ÇÔ¼ö
+// 4. Response ëŒ€í™”ë°© ë¦¬ìŠ¤íŠ¸ ì²˜ë¦¬ í•¨ìˆ˜
 void Server::SendResponseRoomList(SOCKET sock)
 {
-	wprintf(L"Send : 04 - ¹æ ¸®½ºÆ® ÀÀ´ä [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
+	wprintf(L"Send : 04 - ë°© ë¦¬ìŠ¤íŠ¸ ì‘ë‹µ [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
 
 	NetworkPacketHeader networkPacketHeader;
 	SerializationBuffer serializationBuffer;
@@ -424,10 +424,10 @@ void Server::SendResponseRoomList(SOCKET sock)
 	SendUnicast(sock, networkPacketHeader, &serializationBuffer);
 }
 
-// 5. Request ´ëÈ­¹æ »ı¼º Ã³¸® ÇÔ¼ö
+// 5. Request ëŒ€í™”ë°© ìƒì„± ì²˜ë¦¬ í•¨ìˆ˜
 void Server::RecvRequestRoomCreate(SOCKET sock, SerializationBuffer* serializationBuffer)
 {
-	wprintf(L"Recv : 05 - ¹æ »ı¼º ¿äÃ» [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
+	wprintf(L"Recv : 05 - ë°© ìƒì„± ìš”ì²­ [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
 
 	WORD roomTitleSize;
 
@@ -442,7 +442,7 @@ void Server::RecvRequestRoomCreate(SOCKET sock, SerializationBuffer* serializati
 	SendResponseRoomCreate(sock, roomTitle, roomTitleSize + 2);
 }
 
-// 6. Response ´ëÈ­¹æ »ı¼º (¼ö½Ã) Ã³¸® ÇÔ¼ö
+// 6. Response ëŒ€í™”ë°© ìƒì„± (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 void Server::SendResponseRoomCreate(SOCKET sock, WCHAR* roomTitle, WORD roomTitleSize)
 {
 	NetworkPacketHeader networkPacketHeader;
@@ -451,7 +451,7 @@ void Server::SendResponseRoomCreate(SOCKET sock, WCHAR* roomTitle, WORD roomTitl
 	static WORD roomNum = 1;
 	BYTE response = RESPONSE_ROOM_CREATE_OK;
 
-	// ¹æ ÀÌ¸§ Áßº¹ °Ë»ç
+	// ë°© ì´ë¦„ ì¤‘ë³µ ê²€ì‚¬
 	for (list<ROOMINFO*>::iterator iter = roomInfoList.begin(); iter != roomInfoList.end(); ++iter)
 	{
 		if (wcscmp((*iter)->roomTitle, roomTitle) == 0)
@@ -461,13 +461,13 @@ void Server::SendResponseRoomCreate(SOCKET sock, WCHAR* roomTitle, WORD roomTitl
 		}
 	}
 
-	// ¹æ °³¼ö ÃÊ°ú È®ÀÎ
+	// ë°© ê°œìˆ˜ ì´ˆê³¼ í™•ì¸
 	if (totalRooms >= ROOM_MAX)
 	{
 		response = RESPONSE_ROOM_CREATE_MAX;
 	}
 
-	wprintf(L"Send : 06 - ¹æ »ı¼º ÀÀ´ä [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
+	wprintf(L"Send : 06 - ë°© ìƒì„± ì‘ë‹µ [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
 
 	ROOMINFO* roomInfoStruct = new ROOMINFO;
 
@@ -493,14 +493,14 @@ void Server::SendResponseRoomCreate(SOCKET sock, WCHAR* roomTitle, WORD roomTitl
 
 }
 
-// 7. Request ´ëÈ­¹æ ÀÔÀå Ã³¸® ÇÔ¼ö
+// 7. Request ëŒ€í™”ë°© ì…ì¥ ì²˜ë¦¬ í•¨ìˆ˜
 void Server::RecvRequestRoomEnter(SOCKET sock, SerializationBuffer* serializationBuffer)
 {
 	map<SOCKET, SOCKETINFO*>::iterator socketInfoMapIter = socketInfoMap.find(sock);
 
 	SOCKETINFO* tmpSocketInfo = socketInfoMapIter->second;
 
-	wprintf(L"Recv : 07 - ¹æ ÀÔÀå ¿äÃ» [NO : %d]\n", tmpSocketInfo->userInfo->userNo);
+	wprintf(L"Recv : 07 - ë°© ì…ì¥ ìš”ì²­ [NO : %d]\n", tmpSocketInfo->userInfo->userNo);
 
 	int roomNum;
 
@@ -508,7 +508,7 @@ void Server::RecvRequestRoomEnter(SOCKET sock, SerializationBuffer* serializatio
 
 	BYTE response = RESPONSE_ROOM_ENTER_OK;
 
-	// ¹æ ¹øÈ£ ¿À·ù °Ë»ç
+	// ë°© ë²ˆí˜¸ ì˜¤ë¥˜ ê²€ì‚¬
 	list<ROOMINFO*>::iterator roomInfoListIter;
 	list<ROOMINFO*>::iterator roomInfoListEnd = roomInfoList.end();
 
@@ -526,7 +526,7 @@ void Server::RecvRequestRoomEnter(SOCKET sock, SerializationBuffer* serializatio
 		response = RESPONSE_ROOM_ENTER_NOT;
 	}
 
-	// ÀÎ¿ø ÃÊ°ú
+	// ì¸ì› ì´ˆê³¼
 	if (!(roomInfoListIter == roomInfoListEnd) && (*roomInfoListIter)->numberOfPeople >= ROOM_PEOPLE_MAX)
 	{
 		response = RESPONSE_ROOM_ENTER_MAX;
@@ -535,7 +535,7 @@ void Server::RecvRequestRoomEnter(SOCKET sock, SerializationBuffer* serializatio
 	SendResponseRoomEnter(sock, response, (*roomInfoListIter));
 }
 
-// 8. Response ´ëÈ­¹æ ÀÔÀå Ã³¸® ÇÔ¼ö
+// 8. Response ëŒ€í™”ë°© ì…ì¥ ì²˜ë¦¬ í•¨ìˆ˜
 void Server::SendResponseRoomEnter(SOCKET sock, BYTE response, ROOMINFO* roomInfoPtr)
 {
 	NetworkPacketHeader networkPacketHeader;
@@ -546,7 +546,7 @@ void Server::SendResponseRoomEnter(SOCKET sock, BYTE response, ROOMINFO* roomInf
 
 	if (response == RESPONSE_ROOM_ENTER_OK)
 	{
-		wprintf(L"Send : 08 - ¹æ ÀÔÀå ÀÀ´ä [NO : %d]\n", tmpSocketInfo->userInfo->userNo);
+		wprintf(L"Send : 08 - ë°© ì…ì¥ ì‘ë‹µ [NO : %d]\n", tmpSocketInfo->userInfo->userNo);
 
 		roomInfoPtr->sockInfo->push_back(tmpSocketInfo);
 
@@ -564,12 +564,12 @@ void Server::SendResponseRoomEnter(SOCKET sock, BYTE response, ROOMINFO* roomInf
 	}
 }
 
-// 9. Request Ã¤ÆÃ ¼Û½Å Ã³¸® ÇÔ¼ö
+// 9. Request ì±„íŒ… ì†¡ì‹  ì²˜ë¦¬ í•¨ìˆ˜
 void Server::RecvRequestChat(SOCKET sock, SerializationBuffer* serializationBuffer)
 {
 	WORD msgSize;
 
-	wprintf(L"Recv : 09 - Ã¤ÆÃ ¼Û½Å [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
+	wprintf(L"Recv : 09 - ì±„íŒ… ì†¡ì‹  [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
 
 	*serializationBuffer >> msgSize;
 
@@ -584,7 +584,7 @@ void Server::RecvRequestChat(SOCKET sock, SerializationBuffer* serializationBuff
 	delete[] msg;
 }
 
-// 10. Response Ã¤ÆÃ ¼ö½Å (¼ö½Ã) (³ª¿¡°Õ ¿ÀÁö ¾ÊÀ½) Ã³¸® ÇÔ¼ö
+// 10. Response ì±„íŒ… ìˆ˜ì‹  (ìˆ˜ì‹œ) (ë‚˜ì—ê² ì˜¤ì§€ ì•ŠìŒ) ì²˜ë¦¬ í•¨ìˆ˜
 void Server::SendResponseChat(SOCKET sock, WORD msgSize, WCHAR* msg)
 {
 	NetworkPacketHeader networkPacketHeader;
@@ -595,15 +595,15 @@ void Server::SendResponseChat(SOCKET sock, WORD msgSize, WCHAR* msg)
 	SendBroadcastRoom(sock, networkPacketHeader, &serializationBuffer, roomNo);
 }
 
-// 11. Request ¹æ ÅğÀå Ã³¸® ÇÔ¼ö
+// 11. Request ë°© í‡´ì¥ ì²˜ë¦¬ í•¨ìˆ˜
 void Server::RecvRequestRoomLeave(SOCKET sock, SerializationBuffer* serializationBuffer)
 {
-	wprintf(L"Recv : 11 - ¹æ ÅğÀå ¿äÃ» [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
+	wprintf(L"Recv : 11 - ë°© í‡´ì¥ ìš”ì²­ [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
 
 	SendResponseRoomLeave(sock);
 }
 
-// 12. Response ¹æ ÅğÀå (¼ö½Ã) Ã³¸® ÇÔ¼ö
+// 12. Response ë°© í‡´ì¥ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 void Server::SendResponseRoomLeave(SOCKET sock)
 {
 	NetworkPacketHeader networkPacketHeader;
@@ -623,7 +623,7 @@ void Server::SendResponseRoomLeave(SOCKET sock)
 
 	if (tmpRoomInfo == nullptr)
 	{
-		wprintf(L"¹æÀ» Ã£Áö ¸øÇÏ¿´½À´Ï´Ù. (12)\n");
+		wprintf(L"ë°©ì„ ì°¾ì§€ ëª»í•˜ì˜€ìŠµë‹ˆë‹¤. (12)\n");
 		return;
 	}
 
@@ -648,10 +648,10 @@ void Server::SendResponseRoomLeave(SOCKET sock)
 	}
 }
 
-// 13. Response ¹æ »èÁ¦ (¼ö½Ã) Ã³¸® ÇÔ¼ö
+// 13. Response ë°© ì‚­ì œ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 void Server::SendResponseRoomDelete(SOCKET sock, int roomNo)
 {
-	wprintf(L"Send : 13 - ¹æ »èÁ¦ ÀÀ´ä [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
+	wprintf(L"Send : 13 - ë°© ì‚­ì œ ì‘ë‹µ [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
 
 	NetworkPacketHeader networkPacketHeader;
 	SerializationBuffer serializationBuffer;
@@ -681,7 +681,7 @@ void Server::SendResponseRoomDelete(SOCKET sock, int roomNo)
 	SendBroadcast(networkPacketHeader, &serializationBuffer);
 }
 
-// 14. Response Å¸ »ç¿ëÀÚ ÀÔÀå (¼ö½Ã) Ã³¸® ÇÔ¼ö
+// 14. Response íƒ€ ì‚¬ìš©ì ì…ì¥ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 void Server::SendResponseUserEnter(SOCKET sock, SOCKETINFO* socketInfo)
 {
 	NetworkPacketHeader networkPacketHeader;
@@ -692,10 +692,10 @@ void Server::SendResponseUserEnter(SOCKET sock, SOCKETINFO* socketInfo)
 	SendBroadcastRoom(sock, networkPacketHeader, &serializationBuffer, socketInfo->enterRoomNo);
 }
 
-// 15. Request È¸¿ø °¡ÀÔ Ã³¸® ÇÔ¼ö
+// 15. Request íšŒì› ê°€ì… ì²˜ë¦¬ í•¨ìˆ˜
 void Server::RecvRequestJoin(SOCKET sock, SerializationBuffer *serializationBuffer)
 {
-	wprintf(L"Recv : 15 - È¸¿ø °¡ÀÔ ¿äÃ» [SOCK : %lld]\n", sock);
+	wprintf(L"Recv : 15 - íšŒì› ê°€ì… ìš”ì²­ [SOCK : %lld]\n", sock);
 
 	WCHAR id[ID_MAX_LEN], pw[PW_MAX_LEN], name[NAME_MAX_LEN], phoneNum[PHONENUM_MAX_LEN];
 
@@ -704,17 +704,17 @@ void Server::RecvRequestJoin(SOCKET sock, SerializationBuffer *serializationBuff
 	SendResponseJoin(sock, id, pw, name, phoneNum);
 }
 
-// 16. Response È¸¿ø °¡ÀÔ Ã³¸® ÇÔ¼ö
+// 16. Response íšŒì› ê°€ì… ì²˜ë¦¬ í•¨ìˆ˜
 void Server::SendResponseJoin(SOCKET sock, WCHAR *id, WCHAR *pw, WCHAR *name, WCHAR *phoneNum)
 {
-	wprintf(L"Send : 16 - È¸¿ø °¡ÀÔ ÀÀ´ä [SOCK : %lld]\n", sock);
+	wprintf(L"Send : 16 - íšŒì› ê°€ì… ì‘ë‹µ [SOCK : %lld]\n", sock);
 
 	NetworkPacketHeader networkPacketHeader;
 	SerializationBuffer serializationBuffer;
 
 	BYTE response = RESPONSE_JOIN_OK;
 
-	// ¾ÆÀÌµğ Áßº¹ °Ë»ç.
+	// ì•„ì´ë”” ì¤‘ë³µ ê²€ì‚¬.
 	map<int, USERINFO*>::iterator userInfoMapIter;
 
 	for (userInfoMapIter = userInfoMap.begin(); userInfoMapIter != userInfoMap.end(); ++userInfoMapIter)
@@ -726,7 +726,7 @@ void Server::SendResponseJoin(SOCKET sock, WCHAR *id, WCHAR *pw, WCHAR *name, WC
 		}
 	}
 
-	// »ç¿ëÀÚ ÃÊ°ú È®ÀÎ
+	// ì‚¬ìš©ì ì´ˆê³¼ í™•ì¸
 	if (totalSockets >= SOCKETINFO_ARRAY_MAX)
 	{
 		response = RESPONSE_JOIN_MAX;
@@ -752,10 +752,10 @@ void Server::SendResponseJoin(SOCKET sock, WCHAR *id, WCHAR *pw, WCHAR *name, WC
 	SendUnicast(sock, networkPacketHeader, &serializationBuffer);
 }
 
-// 17. Request È¸¿ø Á¤º¸ ¼öÁ¤ ÇÔ¼ö
+// 17. Request íšŒì› ì •ë³´ ìˆ˜ì • í•¨ìˆ˜
 void Server::RecvRequestEditInfo(SOCKET sock, SerializationBuffer *serializationBuffer)
 {
-	wprintf(L"Recv : 17 - È¸¿ø Á¤º¸ ¼öÁ¤ ¿äÃ» [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
+	wprintf(L"Recv : 17 - íšŒì› ì •ë³´ ìˆ˜ì • ìš”ì²­ [NO : %d]\n", socketInfoMap.find(sock)->second->userInfo->userNo);
 
 	WCHAR id[ID_MAX_LEN], pw[PW_MAX_LEN], name[NAME_MAX_LEN], phoneNum[PHONENUM_MAX_LEN];
 
@@ -764,19 +764,18 @@ void Server::RecvRequestEditInfo(SOCKET sock, SerializationBuffer *serialization
 	SendResponseEditInfo(sock, id, pw, name, phoneNum);
 }
 
-// 18. Response È¸¿ø Á¤º¸ ¼öÁ¤ ÇÔ¼ö
+// 18. Response íšŒì› ì •ë³´ ìˆ˜ì • í•¨ìˆ˜
 void Server::SendResponseEditInfo(SOCKET sock, WCHAR *id, WCHAR *pw, WCHAR *name, WCHAR *phoneNum)
 {
 	USERINFO *editUser = socketInfoMap.find(sock)->second->userInfo;
-	wprintf(L"Send : 16 - È¸¿ø Á¤º¸ ¼öÁ¤ ÀÀ´ä [NO : %d]\n", editUser->userNo);
+	wprintf(L"Send : 16 - íšŒì› ì •ë³´ ìˆ˜ì • ì‘ë‹µ [NO : %d]\n", editUser->userNo);
 
 	NetworkPacketHeader networkPacketHeader;
 	SerializationBuffer serializationBuffer;
 
 	BYTE response = RESPONSE_EDIT_INFO_OK;
-	int userNo = -1;
 
-	// ¾ÆÀÌµğ Áßº¹ °Ë»ç.
+	// ì•„ì´ë”” ì¤‘ë³µ ê²€ì‚¬.
 	map<int, USERINFO*>::iterator userInfoMapIter;
 
 	for (userInfoMapIter = userInfoMap.begin(); userInfoMapIter != userInfoMap.end(); ++userInfoMapIter)
@@ -790,24 +789,23 @@ void Server::SendResponseEditInfo(SOCKET sock, WCHAR *id, WCHAR *pw, WCHAR *name
 
 	if (response == RESPONSE_LOGIN_OK)
 	{
-		userNo = editUser->userNo;
 		wcscpy_s(editUser->id, ID_MAX_LEN, id);
 		wcscpy_s(editUser->pw, PW_MAX_LEN, pw);
 		wcscpy_s(editUser->name, NAME_MAX_LEN, name);
 		wcscpy_s(editUser->phoneNum, PHONENUM_MAX_LEN, phoneNum);
 	}
 
-	MakePacketResponseEditInfo(&networkPacketHeader, &serializationBuffer, response, userNo);
+	MakePacketResponseEditInfo(&networkPacketHeader, &serializationBuffer, response, editUser->id, editUser->name);
 
 	SendUnicast(sock, networkPacketHeader, &serializationBuffer);
 }
 
-// ¼ÒÄÏ Á¤º¸¸¦ Ãß°¡ÇÏ´Â ÇÔ¼öÀÌ´Ù.
+// ì†Œì¼“ ì •ë³´ë¥¼ ì¶”ê°€í•˜ëŠ” í•¨ìˆ˜ì´ë‹¤.
 BOOL Server::AddSocketInfo(SOCKET sock)
 {
 	if (totalSockets > SOCKETINFO_ARRAY_MAX)
 	{
-		wprintf(L"[¿À·ù] ¼ÒÄÏ Á¤º¸¸¦ Ãß°¡ÇÒ ¼ö ¾ø½À´Ï´Ù!\n");
+		wprintf(L"[ì˜¤ë¥˜] ì†Œì¼“ ì •ë³´ë¥¼ ì¶”ê°€í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤!\n");
 
 		return FALSE;
 	}
@@ -817,23 +815,23 @@ BOOL Server::AddSocketInfo(SOCKET sock)
 	ptr->alreadyRoom = false;
 	ptr->enterRoomNo = -1;
 
-	wprintf(L"¼ÒÄÏ ¿¬°á [SOCK : %lld]\n", sock);
+	wprintf(L"ì†Œì¼“ ì—°ê²° [SOCK : %lld]\n", sock);
 
 	socketInfoMap.insert(map<SOCKET, SOCKETINFO*>::value_type(sock, ptr));
-	//socketInfoMap[sock] = ptr; // -> ¸Ş¸ğ¸®¸¦ Ãß°¡ ÇÒ´çÇÏ±â ¶§¹®¿¡ »ç¿ëÇÏÁö ¸» °Í.
+	//socketInfoMap[sock] = ptr; // -> ë©”ëª¨ë¦¬ë¥¼ ì¶”ê°€ í• ë‹¹í•˜ê¸° ë•Œë¬¸ì— ì‚¬ìš©í•˜ì§€ ë§ ê²ƒ.
 
 	totalSockets++;
 
 	return TRUE;
 }
 
-// ¼ÒÄÏ Á¤º¸¸¦ »èÁ¦ÇÏ´Â ÇÔ¼öÀÌ´Ù.
+// ì†Œì¼“ ì •ë³´ë¥¼ ì‚­ì œí•˜ëŠ” í•¨ìˆ˜ì´ë‹¤.
 map<SOCKET, SOCKETINFO*>::iterator Server::RemoveSocketInfo(SOCKET sock)
 {
 	map<SOCKET, SOCKETINFO*>::iterator iter = socketInfoMap.find(sock);
 	SOCKETINFO *sockInfo = iter->second;
 
-	wprintf(L"¿¬°á ÇØÁ¦ [SOCK : %lld]\n", sock);
+	wprintf(L"ì—°ê²° í•´ì œ [SOCK : %lld]\n", sock);
 
 	if (iter != socketInfoMap.end())
 	{
@@ -853,7 +851,7 @@ map<SOCKET, SOCKETINFO*>::iterator Server::RemoveSocketInfo(SOCKET sock)
 	return iter;
 }
 
-// ¹æÀ» Ã£´Â ÇÔ¼ö
+// ë°©ì„ ì°¾ëŠ” í•¨ìˆ˜
 ROOMINFO* Server::FindRoom(int roomNo)
 {
 	list<ROOMINFO*>::iterator roomInfoListIter;
@@ -869,7 +867,7 @@ ROOMINFO* Server::FindRoom(int roomNo)
 	return nullptr;
 }
 
-// ±× »ç¶÷¿¡°Ô¸¸ ¼Û½ÅÇÏ´Â ÇÔ¼ö
+// ê·¸ ì‚¬ëŒì—ê²Œë§Œ ì†¡ì‹ í•˜ëŠ” í•¨ìˆ˜
 void Server::SendUnicast(SOCKET sock, NetworkPacketHeader networkPacketHeader,
 	SerializationBuffer* serializationBuffer)
 {
@@ -880,7 +878,7 @@ void Server::SendUnicast(SOCKET sock, NetworkPacketHeader networkPacketHeader,
 		serializationBuffer->GetUseSize());
 }
 
-// ±× »ç¶÷¿¡°Ô¸¸ ¼Û½ÅÇÏ´Â ÇÔ¼ö
+// ê·¸ ì‚¬ëŒì—ê²Œë§Œ ì†¡ì‹ í•˜ëŠ” í•¨ìˆ˜
 void Server::SendUnicast(SOCKETINFO* socketInfo, NetworkPacketHeader networkPacketHeader, SerializationBuffer* serializationBuffer)
 {
 	socketInfo->sendQueue.Enqueue((BYTE*)&networkPacketHeader, sizeof(networkPacketHeader));
@@ -888,7 +886,7 @@ void Server::SendUnicast(SOCKETINFO* socketInfo, NetworkPacketHeader networkPack
 		serializationBuffer->GetUseSize());
 }
 
-// ¸ğµç »ç¶÷µé¿¡°Ô ¼Û½ÅÇÏ´Â ÇÔ¼ö
+// ëª¨ë“  ì‚¬ëŒë“¤ì—ê²Œ ì†¡ì‹ í•˜ëŠ” í•¨ìˆ˜
 void Server::SendBroadcast(NetworkPacketHeader networkPacketHeader, SerializationBuffer* serializationBuffer)
 {
 	map<SOCKET, SOCKETINFO*>::iterator iter;
@@ -899,7 +897,7 @@ void Server::SendBroadcast(NetworkPacketHeader networkPacketHeader, Serializatio
 	}
 }
 
-// ¹æ¿¡ ÀÖ´Â »ç¶÷µé¿¡°Ô ¼Û½ÅÇÏ´Â ÇÔ¼ö
+// ë°©ì— ìˆëŠ” ì‚¬ëŒë“¤ì—ê²Œ ì†¡ì‹ í•˜ëŠ” í•¨ìˆ˜
 void Server::SendBroadcastRoom(SOCKET exceptSock, NetworkPacketHeader networkPacketHeader,
 	SerializationBuffer* serializationBuffer, int roomNo)
 {
@@ -907,7 +905,7 @@ void Server::SendBroadcastRoom(SOCKET exceptSock, NetworkPacketHeader networkPac
 
 	if (tmpRoomInfo == nullptr)
 	{
-		wprintf(L"¹æÀ» Ã£Áö ¸øÇÏ¿´½À´Ï´Ù (SBR).\n");
+		wprintf(L"ë°©ì„ ì°¾ì§€ ëª»í•˜ì˜€ìŠµë‹ˆë‹¤ (SBR).\n");
 		return;
 	}
 
@@ -927,7 +925,7 @@ void Server::SendBroadcastRoom(SOCKET exceptSock, NetworkPacketHeader networkPac
 	}
 }
 
-// ¼ÒÄÏ ÇÔ¼ö ¿À·ù Ãâ·Â ÈÄ Á¾·á
+// ì†Œì¼“ í•¨ìˆ˜ ì˜¤ë¥˜ ì¶œë ¥ í›„ ì¢…ë£Œ
 void Server::ErrorQuit(WCHAR* msg)
 {
 	LPVOID lpMsgBuf;
@@ -940,7 +938,7 @@ void Server::ErrorQuit(WCHAR* msg)
 	LocalFree(lpMsgBuf);
 }
 
-// 2. Response ·Î±×ÀÎ Ã³¸® ÆĞÅ¶À» ¸¸µå´Â ÇÔ¼ö
+// 2. Response ë¡œê·¸ì¸ ì²˜ë¦¬ íŒ¨í‚·ì„ ë§Œë“œëŠ” í•¨ìˆ˜
 void Server::MakePacketResponseLogin(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, BYTE response, WCHAR *id, WCHAR *name)
 {
 	networkPacketHeader->code = NETWORK_PACKET_CODE;
@@ -954,7 +952,7 @@ void Server::MakePacketResponseLogin(NetworkPacketHeader* networkPacketHeader, S
 	networkPacketHeader->checkSum = MakeCheckSum(networkPacketHeader->MsgType, networkPacketHeader->PayloadSize, serializationBuffer);
 }
 
-// 4. Response ´ëÈ­¹æ ¸®½ºÆ® Ã³¸® ÇÔ¼ö
+// 4. Response ëŒ€í™”ë°© ë¦¬ìŠ¤íŠ¸ ì²˜ë¦¬ í•¨ìˆ˜
 void Server::MakePacketResponseRoomList(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer)
 {
 	networkPacketHeader->code = NETWORK_PACKET_CODE;
@@ -990,7 +988,7 @@ void Server::MakePacketResponseRoomList(NetworkPacketHeader* networkPacketHeader
 	networkPacketHeader->checkSum = MakeCheckSum(networkPacketHeader->MsgType, networkPacketHeader->PayloadSize, serializationBuffer);
 }
 
-// 6. Response ´ëÈ­¹æ »ı¼º (¼ö½Ã) Ã³¸® ÇÔ¼ö
+// 6. Response ëŒ€í™”ë°© ìƒì„± (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 void Server::MakePacketResponseRoomCreate(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, BYTE response, ROOMINFO* roomInfoStruct)
 {
 	networkPacketHeader->code = NETWORK_PACKET_CODE;
@@ -1007,7 +1005,7 @@ void Server::MakePacketResponseRoomCreate(NetworkPacketHeader* networkPacketHead
 	networkPacketHeader->checkSum = MakeCheckSum(networkPacketHeader->MsgType, networkPacketHeader->PayloadSize, serializationBuffer);
 }
 
-// 8. Response ´ëÈ­¹æ ÀÔÀå Ã³¸® ÇÔ¼ö
+// 8. Response ëŒ€í™”ë°© ì…ì¥ ì²˜ë¦¬ í•¨ìˆ˜
 bool Server::MakePacketResponseRoomEnter(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, BYTE response, ROOMINFO* roomInfoPtr)
 {
 	if (response == RESPONSE_ROOM_ENTER_OK)
@@ -1041,7 +1039,7 @@ bool Server::MakePacketResponseRoomEnter(NetworkPacketHeader* networkPacketHeade
 	return false;
 }
 
-// 10. Response Ã¤ÆÃ ¼ö½Å (¼ö½Ã) (³ª¿¡°Õ ¿ÀÁö ¾ÊÀ½) Ã³¸® ÇÔ¼ö
+// 10. Response ì±„íŒ… ìˆ˜ì‹  (ìˆ˜ì‹œ) (ë‚˜ì—ê² ì˜¤ì§€ ì•ŠìŒ) ì²˜ë¦¬ í•¨ìˆ˜
 int Server::MakePacketResponseChat(NetworkPacketHeader* networkPacketHeader,
 	SerializationBuffer* serializationBuffer, SOCKET sock, WORD msgSize, WCHAR* msg)
 {
@@ -1049,7 +1047,7 @@ int Server::MakePacketResponseChat(NetworkPacketHeader* networkPacketHeader,
 
 	SOCKETINFO* tmpSocketInfo = socketInfoMapIter->second;
 
-	wprintf(L"Send : 10 - Ã¤ÆÃ ¼ö½Å [NO : %d]\n", tmpSocketInfo->userInfo->userNo);
+	wprintf(L"Send : 10 - ì±„íŒ… ìˆ˜ì‹  [NO : %d]\n", tmpSocketInfo->userInfo->userNo);
 
 	networkPacketHeader->code = NETWORK_PACKET_CODE;
 	networkPacketHeader->MsgType = RESPONSE_CHAT;
@@ -1064,7 +1062,7 @@ int Server::MakePacketResponseChat(NetworkPacketHeader* networkPacketHeader,
 	return tmpSocketInfo->enterRoomNo;
 }
 
-// 12. Response ¹æ ÅğÀå (¼ö½Ã) Ã³¸® ÇÔ¼ö
+// 12. Response ë°© í‡´ì¥ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 int Server::MakePacketResponseRoomLeave(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, SOCKET sock)
 {
 	map<SOCKET, SOCKETINFO*>::iterator socketInfoMapIter = socketInfoMap.find(sock);
@@ -1073,7 +1071,7 @@ int Server::MakePacketResponseRoomLeave(NetworkPacketHeader* networkPacketHeader
 
 	int userNo = tmpSocketInfo->userInfo->userNo;
 
-	wprintf(L"Send : 12 - ¹æ ÅğÀå ÀÀ´ä [NO : %d]\n", userNo);
+	wprintf(L"Send : 12 - ë°© í‡´ì¥ ì‘ë‹µ [NO : %d]\n", userNo);
 
 	*serializationBuffer << userNo;
 
@@ -1085,7 +1083,7 @@ int Server::MakePacketResponseRoomLeave(NetworkPacketHeader* networkPacketHeader
 	return tmpSocketInfo->enterRoomNo;
 }
 
-// 13. Response ¹æ »èÁ¦ (¼ö½Ã) Ã³¸® ÇÔ¼ö
+// 13. Response ë°© ì‚­ì œ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 void Server::MakePacketResponseRoomDelete(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, int roomNo)
 {
 	networkPacketHeader->code = NETWORK_PACKET_CODE;
@@ -1097,12 +1095,12 @@ void Server::MakePacketResponseRoomDelete(NetworkPacketHeader* networkPacketHead
 	networkPacketHeader->checkSum = MakeCheckSum(networkPacketHeader->MsgType, networkPacketHeader->PayloadSize, serializationBuffer);
 }
 
-// 14. Response Å¸ »ç¿ëÀÚ ÀÔÀå (¼ö½Ã) Ã³¸® ÇÔ¼ö
+// 14. Response íƒ€ ì‚¬ìš©ì ì…ì¥ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 void Server::MakePacketResponseUserEnter(NetworkPacketHeader* networkPacketHeader, SerializationBuffer* serializationBuffer, SOCKET sock, SOCKETINFO* socketInfo)
 {
 	int userNo = socketInfo->userInfo->userNo;
 
-	wprintf(L"Send : 14 - ´Ù¸¥ À¯Àú ÀÔÀå ÀÀ´ä [NO : %d]\n", userNo);
+	wprintf(L"Send : 14 - ë‹¤ë¥¸ ìœ ì € ì…ì¥ ì‘ë‹µ [NO : %d]\n", userNo);
 
 	networkPacketHeader->code = NETWORK_PACKET_CODE;
 	networkPacketHeader->MsgType = RESPONSE_USER_ENTER;
@@ -1114,7 +1112,7 @@ void Server::MakePacketResponseUserEnter(NetworkPacketHeader* networkPacketHeade
 	networkPacketHeader->checkSum = MakeCheckSum(networkPacketHeader->MsgType, networkPacketHeader->PayloadSize, serializationBuffer);
 }
 
-// 16. Response È¸¿ø °¡ÀÔ Ã³¸® ÇÔ¼ö
+// 16. Response íšŒì› ê°€ì… ì²˜ë¦¬ í•¨ìˆ˜
 void Server::MakePacketResponseJoin(NetworkPacketHeader *networkPacketHeader, SerializationBuffer *serializationBuffer, BYTE response, int userNo)
 {
 	networkPacketHeader->code = NETWORK_PACKET_CODE;
@@ -1126,13 +1124,16 @@ void Server::MakePacketResponseJoin(NetworkPacketHeader *networkPacketHeader, Se
 	networkPacketHeader->checkSum = MakeCheckSum(networkPacketHeader->MsgType, networkPacketHeader->PayloadSize, serializationBuffer);
 }
 
-// 18. Response È¸¿ø Á¤º¸ ¼öÁ¤ Ã³¸® ÇÔ¼ö
-void Server::MakePacketResponseEditInfo(NetworkPacketHeader *networkPacketHeader, SerializationBuffer *serializationBuffer, BYTE response, int userNo)
+// 18. Response íšŒì› ì •ë³´ ìˆ˜ì • ì²˜ë¦¬ í•¨ìˆ˜
+void Server::MakePacketResponseEditInfo(NetworkPacketHeader *networkPacketHeader, SerializationBuffer *serializationBuffer, BYTE response, WCHAR *idBuf, WCHAR *nameBuf)
 {
 	networkPacketHeader->code = NETWORK_PACKET_CODE;
 	networkPacketHeader->MsgType = RESPONSE_EDIT_INFO;
 
-	*serializationBuffer << response << userNo;
+	*serializationBuffer << response;
+	
+	serializationBuffer->Enqueue((BYTE*)idBuf, ID_MAX_LEN * sizeof(WCHAR));
+	serializationBuffer->Enqueue((BYTE*)nameBuf, NAME_MAX_LEN * sizeof(WCHAR));
 
 	networkPacketHeader->PayloadSize = serializationBuffer->GetUseSize();
 	networkPacketHeader->checkSum = MakeCheckSum(networkPacketHeader->MsgType, networkPacketHeader->PayloadSize, serializationBuffer);

@@ -1,89 +1,89 @@
-#pragma once
+ï»¿#pragma once
 
 #include "Protocol.h"
 #include "SerializationBuffer.h"
 
-// ¼ÒÄÏ °ü·Ã À©µµ¿ì ¸Ş½ÃÁö Ã³¸®
+// ì†Œì¼“ ê´€ë ¨ ìœˆë„ìš° ë©”ì‹œì§€ ì²˜ë¦¬
 void ProcessSocketMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-// FD_WRITE Ã³¸® ÇÔ¼ö
+// FD_WRITE ì²˜ë¦¬ í•¨ìˆ˜
 void FDWriteProc();
 
-// FD_READ Ã³¸® ÇÔ¼ö
+// FD_READ ì²˜ë¦¬ í•¨ìˆ˜
 void FDReadProc();
 
-// PacketÀ» Ã³¸®ÇÏ´Â ÇÔ¼ö
+// Packetì„ ì²˜ë¦¬í•˜ëŠ” í•¨ìˆ˜
 void PacketProc(WORD msgType, SerializationBuffer* serializationBuffer);
 
-// CheckSumÀ» ¸¸µå´Â ÇÔ¼ö
+// CheckSumì„ ë§Œë“œëŠ” í•¨ìˆ˜
 int MakeCheckSum(WORD msgType, WORD payloadSize, SerializationBuffer* serializationBuffer);
 
-// CheckSumÀ» ¸¸µå´Â ÇÔ¼ö
+// CheckSumì„ ë§Œë“œëŠ” í•¨ìˆ˜
 int MakeCheckSum(WORD msgType);
 
-// 1. Request ·Î±×ÀÎ Ã³¸® ÇÔ¼ö
+// 1. Request ë¡œê·¸ì¸ ì²˜ë¦¬ í•¨ìˆ˜
 void SendRequestLogin(WCHAR *id, WCHAR *pw);
 
-// 2. Response ·Î±×ÀÎ Ã³¸® ÇÔ¼ö
+// 2. Response ë¡œê·¸ì¸ ì²˜ë¦¬ í•¨ìˆ˜
 void RecvResponseLogin(SerializationBuffer* serializationBuffer);
 
-// 3. Request ´ëÈ­¹æ ¸®½ºÆ® Ã³¸® ÇÔ¼ö
+// 3. Request ëŒ€í™”ë°© ë¦¬ìŠ¤íŠ¸ ì²˜ë¦¬ í•¨ìˆ˜
 void SendRequestRoomList();
 
-// 4. Response ´ëÈ­¹æ ¸®½ºÆ® Ã³¸® ÇÔ¼ö
+// 4. Response ëŒ€í™”ë°© ë¦¬ìŠ¤íŠ¸ ì²˜ë¦¬ í•¨ìˆ˜
 void RecvResponseRoomList(SerializationBuffer* serializationBuffer);
 
-// 5. Request ´ëÈ­¹æ »ı¼º Ã³¸® ÇÔ¼ö
+// 5. Request ëŒ€í™”ë°© ìƒì„± ì²˜ë¦¬ í•¨ìˆ˜
 void SendRequestRoomCreate();
 
-// 6. Response ´ëÈ­¹æ »ı¼º (¼ö½Ã) Ã³¸® ÇÔ¼ö
+// 6. Response ëŒ€í™”ë°© ìƒì„± (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 void RecvResponseRoomCreate(SerializationBuffer* serializationBuffer);
 
-// 7. Request ´ëÈ­¹æ ÀÔÀå Ã³¸® ÇÔ¼ö
+// 7. Request ëŒ€í™”ë°© ì…ì¥ ì²˜ë¦¬ í•¨ìˆ˜
 void SendRequestRoomEnter(int index);
 
-// 8. Response ´ëÈ­¹æ ÀÔÀå Ã³¸® ÇÔ¼ö
+// 8. Response ëŒ€í™”ë°© ì…ì¥ ì²˜ë¦¬ í•¨ìˆ˜
 void RecvResponseRoomEnter(SerializationBuffer* serializationBuffer);
 
-// 9. Request Ã¤ÆÃ ¼Û½Å Ã³¸® ÇÔ¼ö
+// 9. Request ì±„íŒ… ì†¡ì‹  ì²˜ë¦¬ í•¨ìˆ˜
 void SendRequestChat();
 
-// 10. Response Ã¤ÆÃ ¼ö½Å (¼ö½Ã) (³ª¿¡°Õ ¿ÀÁö ¾ÊÀ½) Ã³¸® ÇÔ¼ö
+// 10. Response ì±„íŒ… ìˆ˜ì‹  (ìˆ˜ì‹œ) (ë‚˜ì—ê² ì˜¤ì§€ ì•ŠìŒ) ì²˜ë¦¬ í•¨ìˆ˜
 void RecvResponseChat(SerializationBuffer* serializationBuffer);
 
-// 11. Request ¹æ ÅğÀå Ã³¸® ÇÔ¼ö
+// 11. Request ë°© í‡´ì¥ ì²˜ë¦¬ í•¨ìˆ˜
 void SendRequestRoomLeave();
 
-// 12. Response ¹æ ÅğÀå (¼ö½Ã) Ã³¸® ÇÔ¼ö
+// 12. Response ë°© í‡´ì¥ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 void RecvResponseRoomLeave(SerializationBuffer* serializationBuffer);
 
-// 13. Response ¹æ »èÁ¦ (¼ö½Ã) Ã³¸® ÇÔ¼ö
+// 13. Response ë°© ì‚­ì œ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 void RecvResponseRoomDelete(SerializationBuffer* serializationBuffer);
 
-// 14. Response Å¸ »ç¿ëÀÚ ÀÔÀå (¼ö½Ã) Ã³¸® ÇÔ¼ö
+// 14. Response íƒ€ ì‚¬ìš©ì ì…ì¥ (ìˆ˜ì‹œ) ì²˜ë¦¬ í•¨ìˆ˜
 void RecvResponseUserEnter(SerializationBuffer* serializationBuffer);
 
-// 15. Request È¸¿ø °¡ÀÔ ¿äÃ» ÇÔ¼ö
+// 15. Request íšŒì› ê°€ì… ìš”ì²­ í•¨ìˆ˜
 void SendRequestJoin();
 
-// 16. Response È¸¿ø °¡ÀÔ Ã³¸® ÇÔ¼ö
+// 16. Response íšŒì› ê°€ì… ì²˜ë¦¬ í•¨ìˆ˜
 void RecvResponseJoin(SerializationBuffer *serializationBuffer);
 
-// 17. Request È¸¿ø Á¤º¸ ¼öÁ¤ ¿äÃ» ÇÔ¼ö
+// 17. Request íšŒì› ì •ë³´ ìˆ˜ì • ìš”ì²­ í•¨ìˆ˜
 void SendRequestEditInfo();
 
-// 18. Response È¸¿ø Á¤º¸ ¼öÁ¤ Ã³¸® ÇÔ¼ö
+// 18. Response íšŒì› ì •ë³´ ìˆ˜ì • ì²˜ë¦¬ í•¨ìˆ˜
 void RecvResponseEditInfo(SerializationBuffer *serializationBuffer);
 
-// ¼­¹ö·Î ÆĞÅ¶À» º¸³»´Â ÇÔ¼ö
+// ì„œë²„ë¡œ íŒ¨í‚·ì„ ë³´ë‚´ëŠ” í•¨ìˆ˜
 void SendToServer(NetworkPacketHeader networkPacketHeader);
 
-// ¼­¹ö·Î ÆĞÅ¶À» º¸³»´Â ÇÔ¼ö
+// ì„œë²„ë¡œ íŒ¨í‚·ì„ ë³´ë‚´ëŠ” í•¨ìˆ˜
 void SendToServer(NetworkPacketHeader networkPacketHeader,
 	SerializationBuffer* serializationBuffer);
 
-// ¼ÒÄÏ ÇÔ¼ö ¿À·ù Ãâ·Â ÈÄ Á¾·á
+// ì†Œì¼“ í•¨ìˆ˜ ì˜¤ë¥˜ ì¶œë ¥ í›„ ì¢…ë£Œ
 void ErrorQuit(WCHAR* msg);
 
-// ¼ÒÄÏ ÇÔ¼ö ¿À·ù Ãâ·Â
+// ì†Œì¼“ í•¨ìˆ˜ ì˜¤ë¥˜ ì¶œë ¥
 void ErrorDisplay(WCHAR* msg);

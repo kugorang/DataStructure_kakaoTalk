@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <windows.h>
 
@@ -7,51 +7,51 @@
 class SerializationBuffer
 {
 protected:
-	// ¹öÆÛ Æ÷ÀÎÅÍ
+	// ë²„í¼ í¬ì¸í„°
 	BYTE* buffer;
 
-	// ¹öÆÛ »çÀÌÁî, ¹öÆÛÀÇ ¾²±â À§Ä¡, ÀÐ±â À§Ä¡
+	// ë²„í¼ ì‚¬ì´ì¦ˆ, ë²„í¼ì˜ ì“°ê¸° ìœ„ì¹˜, ì½ê¸° ìœ„ì¹˜
 	int bufferSize, front, rear;
 public:
-	// »ý¼ºÀÚ, ÆÄ±«ÀÚ.
+	// ìƒì„±ìž, íŒŒê´´ìž.
 	SerializationBuffer();
 	SerializationBuffer(int bufferSize);
 	virtual ~SerializationBuffer();
 
-	// ¹öÆÛ ÀüÃ¼ÀÇ ¿ë·® ¾òÀ½.
+	// ë²„í¼ ì „ì²´ì˜ ìš©ëŸ‰ ì–»ìŒ.
 	int GetBufferSize();
 
-	// ÇöÀç »ç¿ëÁßÀÎ ¿ë·® ¾ò±â.
+	// í˜„ìž¬ ì‚¬ìš©ì¤‘ì¸ ìš©ëŸ‰ ì–»ê¸°.
 	int GetUseSize();
 
-	// ÇöÀç ¹öÆÛ¿¡ ³²Àº ¿ë·® ¾ò±â.
+	// í˜„ìž¬ ë²„í¼ì— ë‚¨ì€ ìš©ëŸ‰ ì–»ê¸°.
 	int GetRemainSize();
 
-	// ÇÑ Ä­ ÀÌµ¿ ÈÄ Rear À§Ä¡¿¡ µ¥ÀÌÅÍ ³ÖÀ½.
+	// í•œ ì¹¸ ì´ë™ í›„ Rear ìœ„ì¹˜ì— ë°ì´í„° ë„£ìŒ.
 	int Enqueue(BYTE* data, int size);
 
-	// ÇÑ Ä­ ÀÌµ¿ ÈÄ Front À§Ä¡¿¡¼­ µ¥ÀÌÅÍ »­. Front ÀÌµ¿.
+	// í•œ ì¹¸ ì´ë™ í›„ Front ìœ„ì¹˜ì—ì„œ ë°ì´í„° ëºŒ. Front ì´ë™.
 	int Dequeue(BYTE* data, int size);
 
-	// ÇÑ Ä­ ÀÌµ¿ ÈÄ Front À§Ä¡¿¡¼­ µ¥ÀÌÅÍ °¡Á® ¿È. Front ¾È º¯ÇÔ.
+	// í•œ ì¹¸ ì´ë™ í›„ Front ìœ„ì¹˜ì—ì„œ ë°ì´í„° ê°€ì ¸ ì˜´. Front ì•ˆ ë³€í•¨.
 	int Peek(BYTE* dest, int size);
 
-	// ¿ÜºÎ¿¡¼­ RearÀÇ À§Ä¡¸¦ ÀÌµ¿.
+	// ì™¸ë¶€ì—ì„œ Rearì˜ ìœ„ì¹˜ë¥¼ ì´ë™.
 	void MoveRearPos(int size);
 
-	// ¿ÜºÎ¿¡¼­ FrontÀÇ À§Ä¡¸¦ ÀÌµ¿.
+	// ì™¸ë¶€ì—ì„œ Frontì˜ ìœ„ì¹˜ë¥¼ ì´ë™.
 	void MoveFrontPos(int size);
 
-	// ¹öÆÛÀÇ ¸ðµç µ¥ÀÌÅÍ »èÁ¦.
+	// ë²„í¼ì˜ ëª¨ë“  ë°ì´í„° ì‚­ì œ.
 	void DeleteAllData();
 
-	// ¹öÆÛÀÇ Æ÷ÀÎÅÍ ¾òÀ½.
+	// ë²„í¼ì˜ í¬ì¸í„° ì–»ìŒ.
 	BYTE* GetBufferPtr();
 
-	// ¹öÆÛÀÇ Rear À§Ä¡ ¹öÆÛ Æ÷ÀÎÅÍ ¾òÀ½.
+	// ë²„í¼ì˜ Rear ìœ„ì¹˜ ë²„í¼ í¬ì¸í„° ì–»ìŒ.
 	BYTE* GetRearPosBufferPtr();
 
-	// ¹öÆÛÀÇ Front À§Ä¡ ¹öÆÛ Æ÷ÀÎÅÍ ¾òÀ½.
+	// ë²„í¼ì˜ Front ìœ„ì¹˜ ë²„í¼ í¬ì¸í„° ì–»ìŒ.
 	BYTE* GetFrontPosBufferPtr();
 
 	template <typename T>

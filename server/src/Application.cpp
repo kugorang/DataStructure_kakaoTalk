@@ -1,4 +1,4 @@
-#include <WinSock2.h>
+ï»¿#include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <locale.h>
 #include <crtdbg.h>
@@ -6,12 +6,12 @@
 
 void Application::Run()
 {
-	//_crtBreakAlloc = 402; // Áß´ÜÁ¡À» °É¾îÁÖ´Â ¹®±¸, _CrtSetDbgFlag¿Í ¼¼Æ®
+	//_crtBreakAlloc = 402; // ì¤‘ë‹¨ì ì„ ê±¸ì–´ì£¼ëŠ” ë¬¸êµ¬, _CrtSetDbgFlagì™€ ì„¸íŠ¸
 	setlocale(LC_ALL, "");
 
 	int retVal;
 
-	// À©¼Ó ÃÊ±âÈ­
+	// ìœˆì† ì´ˆê¸°í™”
 	WSADATA wsa;
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
@@ -55,7 +55,7 @@ void Application::Run()
 	server.Network(listenSock);
 }
 
-// ¼ÒÄÏ ÇÔ¼ö ¿À·ù Ãâ·Â ÈÄ Á¾·á
+// ì†Œì¼“ í•¨ìˆ˜ ì˜¤ë¥˜ ì¶œë ¥ í›„ ì¢…ë£Œ
 void Application::ErrorQuit(WCHAR* msg)
 {
 	LPVOID lpMsgBuf;

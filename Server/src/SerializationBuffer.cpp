@@ -1,6 +1,6 @@
-#include "SerializationBuffer.h"
+ï»¿#include "SerializationBuffer.h"
 
-// »ı¼ºÀÚ.
+// ìƒì„±ì.
 SerializationBuffer::SerializationBuffer()
 {
 	bufferSize = SERIALIZATIONBUFFER_DEFAULT_SIZE;
@@ -11,7 +11,7 @@ SerializationBuffer::SerializationBuffer()
 	//ZeroMemory(buffer, sizeof(BYTE) * bufferSize);
 }
 
-// »ı¼ºÀÚ.
+// ìƒì„±ì.
 SerializationBuffer::SerializationBuffer(int bufferSize)
 {
 	this->bufferSize = bufferSize;
@@ -22,20 +22,20 @@ SerializationBuffer::SerializationBuffer(int bufferSize)
 	//ZeroMemory(buffer, sizeof(BYTE) * (bufferSize));
 }
 
-// ÆÄ±«ÀÚ.
+// íŒŒê´´ì.
 SerializationBuffer::~SerializationBuffer()
 {
 	delete[] buffer;
 	buffer = nullptr;
 }
 
-// ¹öÆÛ ÀüÃ¼ÀÇ ¿ë·® ¾òÀ½.
+// ë²„í¼ ì „ì²´ì˜ ìš©ëŸ‰ ì–»ìŒ.
 int SerializationBuffer::GetBufferSize()
 {
 	return sizeof(BYTE) * (bufferSize);
 }
 
-// ÇöÀç »ç¿ëÁßÀÎ ¿ë·® ¾ò±â.
+// í˜„ì¬ ì‚¬ìš©ì¤‘ì¸ ìš©ëŸ‰ ì–»ê¸°.
 int SerializationBuffer::GetUseSize()
 {
 	if (rear >= front)
@@ -48,7 +48,7 @@ int SerializationBuffer::GetUseSize()
 	}
 }
 
-// ÇöÀç ¹öÆÛ¿¡ ³²Àº ¿ë·® ¾ò±â.
+// í˜„ì¬ ë²„í¼ì— ë‚¨ì€ ìš©ëŸ‰ ì–»ê¸°.
 int SerializationBuffer::GetRemainSize()
 {
 	if (rear >= front)
@@ -61,7 +61,7 @@ int SerializationBuffer::GetRemainSize()
 	}
 }
 
-// Rear À§Ä¡¿¡ µ¥ÀÌÅÍ ³ÖÀ½.
+// Rear ìœ„ì¹˜ì— ë°ì´í„° ë„£ìŒ.
 int SerializationBuffer::Enqueue(BYTE* data, int size)
 {
 	int remainSize = GetRemainSize();
@@ -77,7 +77,7 @@ int SerializationBuffer::Enqueue(BYTE* data, int size)
 	return size;
 }
 
-// Front À§Ä¡¿¡¼­ µ¥ÀÌÅÍ »­. Front ÀÌµ¿.
+// Front ìœ„ì¹˜ì—ì„œ ë°ì´í„° ëºŒ. Front ì´ë™.
 int SerializationBuffer::Dequeue(BYTE* data, int size)
 {
 	int useSize = this->GetUseSize();
@@ -95,7 +95,7 @@ int SerializationBuffer::Dequeue(BYTE* data, int size)
 	return size;
 }
 
-// Front À§Ä¡¿¡¼­ µ¥ÀÌÅÍ °¡Á® ¿È. Front ¾È º¯ÇÔ.
+// Front ìœ„ì¹˜ì—ì„œ ë°ì´í„° ê°€ì ¸ ì˜´. Front ì•ˆ ë³€í•¨.
 int SerializationBuffer::Peek(BYTE* dest, int size)
 {
 	int useSize = GetUseSize();
@@ -109,38 +109,38 @@ int SerializationBuffer::Peek(BYTE* dest, int size)
 	return size;
 }
 
-// ¿ÜºÎ¿¡¼­ RearÀÇ À§Ä¡¸¦ ÀÌµ¿.
+// ì™¸ë¶€ì—ì„œ Rearì˜ ìœ„ì¹˜ë¥¼ ì´ë™.
 void SerializationBuffer::MoveRearPos(int size)
 {
 	rear = (rear + size) % bufferSize;
 }
 
-// ¿ÜºÎ¿¡¼­ FrontÀÇ À§Ä¡¸¦ ÀÌµ¿.
+// ì™¸ë¶€ì—ì„œ Frontì˜ ìœ„ì¹˜ë¥¼ ì´ë™.
 void SerializationBuffer::MoveFrontPos(int size)
 {
 	front = (front + size) % bufferSize;
 }
 
-// ¹öÆÛÀÇ ¸ğµç µ¥ÀÌÅÍ »èÁ¦.
+// ë²„í¼ì˜ ëª¨ë“  ë°ì´í„° ì‚­ì œ.
 void SerializationBuffer::DeleteAllData()
 {
 	front = 0;
 	rear = 0;
 }
 
-// ¹öÆÛÀÇ Æ÷ÀÎÅÍ ¾òÀ½.
+// ë²„í¼ì˜ í¬ì¸í„° ì–»ìŒ.
 BYTE* SerializationBuffer::GetBufferPtr()
 {
 	return buffer;
 }
 
-// ¹öÆÛÀÇ Rear À§Ä¡ ¹öÆÛ Æ÷ÀÎÅÍ ¾òÀ½.
+// ë²„í¼ì˜ Rear ìœ„ì¹˜ ë²„í¼ í¬ì¸í„° ì–»ìŒ.
 BYTE* SerializationBuffer::GetRearPosBufferPtr()
 {
 	return buffer + rear;
 }
 
-// ¹öÆÛÀÇ Front À§Ä¡ ¹öÆÛ Æ÷ÀÎÅÍ ¾òÀ½.
+// ë²„í¼ì˜ Front ìœ„ì¹˜ ë²„í¼ í¬ì¸í„° ì–»ìŒ.
 BYTE* SerializationBuffer::GetFrontPosBufferPtr()
 {
 	return buffer + front;

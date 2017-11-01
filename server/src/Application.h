@@ -1,17 +1,17 @@
-#pragma once
+ï»¿#pragma once
 
 #include "Server.h"
 
 class Application
 {
 private:
-	// ¼­¹ö
+	// ì„œë²„
 	Server server;
 
-	// listen ¼ÒÄÏ
+	// listen ì†Œì¼“
 	SOCKET listenSock;
 
-	// ¼ÒÄÏ ÇÔ¼ö ¿À·ù Ãâ·Â ÈÄ Á¾·á
+	// ì†Œì¼“ í•¨ìˆ˜ ì˜¤ë¥˜ ì¶œë ¥ í›„ ì¢…ë£Œ
 	void ErrorQuit(WCHAR* msg);
 
 public:
